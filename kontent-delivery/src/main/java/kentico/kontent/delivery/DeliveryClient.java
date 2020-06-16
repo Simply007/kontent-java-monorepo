@@ -36,10 +36,11 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 
 import java.io.IOException;
-import java.net.Proxy;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 
@@ -92,10 +93,6 @@ public class DeliveryClient {
     private TemplateEngineConfig templateEngineConfig;
 
     private OkHttpClient httpClient;
-
-    private Proxy proxyServer;
-//    private AsyncHttpClient asyncHttpClient;
-//    private RxHttpClient rxHttpClient;
 
     private AsyncCacheManager cacheManager = new AsyncCacheManager() {
         @Override
@@ -154,6 +151,8 @@ public class DeliveryClient {
         if (deliveryOptions.getProxyServer() != null) {
             builder.proxy(deliveryOptions.getProxyServer());
         }
+
+        this.httpClient = builder.build();
     }
 
     @SuppressWarnings("unused")
@@ -375,6 +374,9 @@ public class DeliveryClient {
         final CompletionStage<T> retrieveFromCache =
                 cacheManager.get(url).thenApply(jsonNode -> {
                     try {
+                        if (jsonNode == null) {
+                            return null;
+                        }
                         return objectMapper.treeToValue(jsonNode, tClass);
                     } catch (JsonProcessingException e) {
                         log.error("JsonProcessingException parsing Kentico object: {}", e.toString());
@@ -382,7 +384,22 @@ public class DeliveryClient {
                     return null;
                 });
 
-        final CompletionStage<T> retrieveFromKentico = send(request)
+
+        if (skipCache) {
+            return retrieveFromKentico(request, url, tClass, 0);
+        } else {
+            return retrieveFromCache.thenCompose(result -> {
+                if (result != null) {
+                    return CompletableFuture.completedFuture(result);
+                } else {
+                    return retrieveFromKentico(request, url, tClass, 0);
+                }
+            });
+        }
+    }
+
+    private <T> CompletionStage<T> retrieveFromKentico(Request request, final String url, Class<T> tClass, int retryTurn) {
+        return send(request)
                 .thenApply(this::logResponseInfo)
                 .thenApply(this::handleErrorIfNecessary)
                 .thenApply(Response::body)
@@ -407,23 +424,20 @@ public class DeliveryClient {
                         return putInCache(url, tClass, jsonNode);
                     } catch (JsonProcessingException e) {
                         log.error("JsonProcessingException parsing Kentico object: {}", e.toString());
+                        throw new CompletionException(e);
                     }
-                    return CompletableFuture.completedFuture(null);
+                })
+                .exceptionally((error) -> {
+                    try {
+                        // TODO why this is not async?
+                        return configureErrorAndRetry(error, request, url, tClass, retryTurn)
+                                .toCompletableFuture()
+                                .get();
+                    } catch (Throwable e) {
+                        log.error("JsonProcessingException parsing Kentico object: {}", e.toString());
+                        throw new CompletionException(e);
+                    }
                 });
-        // .exceptionally(this::configureErrorAndRetryFlow);
-
-
-        if (skipCache) {
-            return retrieveFromKentico;
-        } else {
-            return retrieveFromCache.thenCompose(result -> {
-                if (result != null) {
-                    return CompletableFuture.completedFuture(result);
-                } else {
-                    return retrieveFromKentico;
-                }
-            });
-        }
     }
 
     private CompletionStage<Response> send(Request request) {
@@ -522,34 +536,29 @@ public class DeliveryClient {
                 .thenApply((result) -> t);
     }
 
-//    private Flow.Publisher<?> configureErrorAndRetryFlow(Throwable error) {
-//        final AtomicInteger counter = new AtomicInteger(0);
-//        return throwable -> {
-//                    // Don't attempt a retry for Kentico specific errors
-//                    if (throwable instanceof KenticoErrorException || throwable instanceof KenticoIOException) {
-//                        return Flowable.error(throwable);
-//                    }
-//                    // Do attempt a retry for any other error while we haven't reached the max attempts yet
-//                    else if (counter.incrementAndGet() <= deliveryOptions.getRetryAttempts()) {
-//                        return Flowable.just(throwable);
-//                    }
-//                    // After the max attempts wrap IOExceptions in a KenticoIOException and propagate it
-//                    else if (throwable instanceof IOException) {
-//                        return Flowable.error(new KenticoIOException((IOException) throwable));
-//                    }
-//                    // Propagate any other exception as is
-//                    else {
-//                        return Flowable.error(throwable);
-//                    }
-//                }
-//                .flatMap(e -> {
-//                    //Perform a binary exponential backoff
-//                    int wait = (int) (100 * Math.pow(2, counter.get()));
-//                    log.info("Reattempting request after {}ms (re-attempt {} out of max {})",
-//                            wait, counter.get(), deliveryOptions.getRetryAttempts());
-//                    return Flowable.timer(wait, TimeUnit.MILLISECONDS);
-//                });
-//    }
+    private <T> CompletionStage<T> configureErrorAndRetry(Throwable error, Request request, final String url, Class<T> tClass, int initialRetryCount) throws Throwable {
+        final AtomicInteger counter = new AtomicInteger(initialRetryCount);
+
+        // Don't attempt a retry for Kentico specific errors
+        if (error instanceof KenticoErrorException || error instanceof KenticoIOException) {
+            throw error;
+        }
+        // Do attempt a retry for any other error while we haven't reached the max attempts yet
+        else if (counter.incrementAndGet() > deliveryOptions.getRetryAttempts()) {
+            throw error;
+        }
+        // After the max attempts wrap IOExceptions in a KenticoIOException and propagate it
+        else if (error instanceof IOException) {
+            throw new KenticoIOException((IOException) error);
+        } else {
+            //Perform a binary exponential backoff
+            int wait = (int) (100 * Math.pow(2, initialRetryCount));
+            log.info("Reattempting request after {}ms (re-attempt {} out of max {})",
+                    wait, counter.get(), deliveryOptions.getRetryAttempts());
+            // TODO add waiting
+            return retrieveFromKentico(request, url, tClass, counter.get());
+        }
+    }
 
     private List<NameValuePair> addTypeParameterIfNecessary(Class tClass, List<NameValuePair> params) {
         Optional<NameValuePair> any = params.stream()
