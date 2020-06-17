@@ -47,6 +47,8 @@ import java.util.stream.Collectors;
 
 // TODO: add JavaDoc
 
+// TODO not Closeable?
+
 @Slf4j
 public class DeliveryClient {
 

@@ -24,13 +24,20 @@
 
 package kentico.kontent.delivery;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.HttpHost;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.localserver.LocalServerTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.net.URI;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -178,71 +185,74 @@ public class DeliveryClientTest extends LocalServerTestBase {
         Assert.assertEquals(2, sentErrorCount[0]);
     }
 
-//    @Test
-//    public void testGetItems() throws Exception {
-//        String projectId = "02a70003-e864-464e-b62c-e0ede97deb8c";
-//
-//        this.serverBootstrap.registerHandler(
-//                String.format("/%s/%s", projectId, "items"),
-//                (request, response, context) -> {
-//                    String uri = String.format("http://testserver%s", request.getRequestLine().getUri());
-//
-//                    List<NameValuePair> nameValuePairs =
-//                            URLEncodedUtils.parse(URI.create(uri), Charset.defaultCharset());
-//                    Map<String, String> params = convertNameValuePairsToMap(nameValuePairs);
-//                    Assert.assertEquals(1, params.size());
-//                    Assert.assertEquals("/path1/path2/test-article", params.get("elements.url_pattern"));
-//                    response.setEntity(
-//                            new InputStreamEntity(
-//                                    this.getClass().getResourceAsStream("SampleContentItemList.json")
-//                            )
-//                    );
-//                });
-//        HttpHost httpHost = this.start();
-//        String testServerUri = httpHost.toURI();
-//        DeliveryOptions deliveryOptions = new DeliveryOptions();
-//        deliveryOptions.setProjectId(projectId);
-//        deliveryOptions.setProductionEndpoint(testServerUri);
-//
-//        DeliveryClient client = new DeliveryClient(deliveryOptions, null);
-//        client.setContentLinkUrlResolver(Link::getUrlSlug);
-//        client.setBrokenLinkUrlResolver(() -> "/404");
-//        client.addRichTextElementResolver(content -> String.format("%s%s", "<p>test</p>", content));
-//
-//        List<NameValuePair> urlPattern = DeliveryParameterBuilder.params().filterEquals("elements.url_pattern", "/path1/path2/test-article").build();
-//        ContentItemsListingResponse items = client.getItems(urlPattern);
-//
-//        Assert.assertNotNull(items);
-//        Assert.assertTrue(((RichTextElement) items.getItems().get(1).getElements().get("description")).getValue().contains("href=\"/on roasts\""));
-//        Assert.assertTrue(((RichTextElement) items.getItems().get(1).getElements().get("description")).getValue().contains("<p>test</p>"));
-//
-//        client.close();
-//    }
-//
-//    @Test
-//    public void testGetAllItems() throws Exception {
-//        String projectId = "02a70003-e864-464e-b62c-e0ede97deb8c";
-//
-//        this.serverBootstrap.registerHandler(
-//                String.format("/%s/%s", projectId, "items"),
-//                (request, response, context) -> response.setEntity(
-//                        new InputStreamEntity(
-//                                this.getClass().getResourceAsStream("SampleContentItemList.json")
-//                        )
-//                ));
-//        HttpHost httpHost = this.start();
-//
-//        DeliveryOptions deliveryOptions = new DeliveryOptions();
-//        deliveryOptions.setProductionEndpoint(httpHost.toURI());
-//        deliveryOptions.setProjectId(projectId);
-//        DeliveryClient client = new DeliveryClient(deliveryOptions, null);
-//
-//        ContentItemsListingResponse items = client.getItems();
-//        Assert.assertNotNull(items);
-//
-//        client.close();
-//    }
-//
+    @Test
+    public void testGetItems() throws Exception {
+        String projectId = "02a70003-e864-464e-b62c-e0ede97deb8c";
+
+        this.serverBootstrap.registerHandler(
+                String.format("/%s/%s", projectId, "items"),
+                (request, response, context) -> {
+                    String uri = String.format("http://testserver%s", request.getRequestLine().getUri());
+
+                    List<NameValuePair> nameValuePairs =
+                            URLEncodedUtils.parse(URI.create(uri), Charset.defaultCharset());
+                    Map<String, String> params = convertNameValuePairsToMap(nameValuePairs);
+                    Assert.assertEquals(1, params.size());
+                    Assert.assertEquals("/path1/path2/test-article", params.get("elements.url_pattern"));
+                    response.setEntity(
+                            new InputStreamEntity(
+                                    this.getClass().getResourceAsStream("SampleContentItemList.json")
+                            )
+                    );
+                });
+        HttpHost httpHost = this.start();
+        String testServerUri = httpHost.toURI();
+        DeliveryOptions deliveryOptions = new DeliveryOptions();
+        deliveryOptions.setProjectId(projectId);
+        deliveryOptions.setProductionEndpoint(testServerUri);
+
+        DeliveryClient client = new DeliveryClient(deliveryOptions, null);
+        client.setContentLinkUrlResolver(Link::getUrlSlug);
+        client.setBrokenLinkUrlResolver(() -> "/404");
+        client.addRichTextElementResolver(content -> String.format("%s%s", "<p>test</p>", content));
+
+        List<kentico.kontent.delivery.NameValuePair> urlPattern = DeliveryParameterBuilder.params().filterEquals("elements.url_pattern", "/path1/path2/test-article").build();
+        ContentItemsListingResponse items = client.getItems(urlPattern)
+                .toCompletableFuture()
+                .get();
+
+        Assert.assertNotNull(items);
+        Assert.assertTrue(((RichTextElement) items.getItems().get(1).getElements().get("description")).getValue().contains("href=\"/on roasts\""));
+        Assert.assertTrue(((RichTextElement) items.getItems().get(1).getElements().get("description")).getValue().contains("<p>test</p>"));
+        ;
+    }
+
+    @Test
+    public void testGetAllItems() throws Exception {
+        String projectId = "02a70003-e864-464e-b62c-e0ede97deb8c";
+
+        this.serverBootstrap.registerHandler(
+                String.format("/%s/%s", projectId, "items"),
+                (request, response, context) -> response.setEntity(
+                        new InputStreamEntity(
+                                this.getClass().getResourceAsStream("SampleContentItemList.json")
+                        )
+                ));
+        HttpHost httpHost = this.start();
+
+        DeliveryOptions deliveryOptions = new DeliveryOptions();
+        deliveryOptions.setProductionEndpoint(httpHost.toURI());
+        deliveryOptions.setProjectId(projectId);
+        DeliveryClient client = new DeliveryClient(deliveryOptions, null);
+
+        ContentItemsListingResponse items = client.getItems()
+                .toCompletableFuture()
+                .get();
+        Assert.assertNotNull(items);
+
+    }
+
+    //
 //    @Test
 //    @SuppressWarnings("all")
 //    public void testGetItemsAsPage() throws Exception {
@@ -1439,11 +1449,11 @@ public class DeliveryClientTest extends LocalServerTestBase {
 //        client.close();
 //    }
 //
-//    private Map<String, String> convertNameValuePairsToMap(List<NameValuePair> nameValuePairs) {
-//        HashMap<String, String> map = new HashMap<>();
-//        for (NameValuePair nameValuePair : nameValuePairs) {
-//            map.put(nameValuePair.getName(), nameValuePair.getValue());
-//        }
-//        return map;
-//    }
+    private Map<String, String> convertNameValuePairsToMap(List<NameValuePair> nameValuePairs) {
+        HashMap<String, String> map = new HashMap<>();
+        for (NameValuePair nameValuePair : nameValuePairs) {
+            map.put(nameValuePair.getName(), nameValuePair.getValue());
+        }
+        return map;
+    }
 }
