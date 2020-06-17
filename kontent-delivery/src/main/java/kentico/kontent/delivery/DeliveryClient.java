@@ -40,6 +40,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -428,13 +429,17 @@ public class DeliveryClient {
                     }
                 })
                 .exceptionally((error) -> {
+
+                    // TODO why this is not async?
                     try {
-                        // TODO why this is not async?
                         return configureErrorAndRetry(error, request, url, tClass, retryTurn)
                                 .toCompletableFuture()
                                 .get();
-                    } catch (Throwable e) {
-                        log.error("JsonProcessingException parsing Kentico object: {}", e.toString());
+                    } catch (InterruptedException e) {
+                        log.error("InterruptedException have been raised");
+                        throw new CompletionException(e);
+                    } catch (ExecutionException e) {
+                        log.error("ExecutionException have been raised");
                         throw new CompletionException(e);
                     }
                 });
@@ -536,16 +541,18 @@ public class DeliveryClient {
                 .thenApply((result) -> t);
     }
 
-    private <T> CompletionStage<T> configureErrorAndRetry(Throwable error, Request request, final String url, Class<T> tClass, int initialRetryCount) throws Throwable {
+    private <T> CompletionStage<T> configureErrorAndRetry(Throwable error, Request request, final String url, Class<T> tClass, int initialRetryCount) throws KenticoIOException, KenticoErrorException, KenticoRetryException {
         final AtomicInteger counter = new AtomicInteger(initialRetryCount);
 
         // Don't attempt a retry for Kentico specific errors
-        if (error instanceof KenticoErrorException || error instanceof KenticoIOException) {
-            throw error;
+        if (error instanceof KenticoIOException) {
+            throw (KenticoIOException) error;
+        } else if (error instanceof KenticoErrorException) {
+            throw (KenticoErrorException) error;
         }
         // Do attempt a retry for any other error while we haven't reached the max attempts yet
         else if (counter.incrementAndGet() > deliveryOptions.getRetryAttempts()) {
-            throw error;
+            throw new KenticoRetryException(deliveryOptions.getRetryAttempts());
         }
         // After the max attempts wrap IOExceptions in a KenticoIOException and propagate it
         else if (error instanceof IOException) {

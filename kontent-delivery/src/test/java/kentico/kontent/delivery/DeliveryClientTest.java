@@ -24,7 +24,6 @@
 
 package kentico.kontent.delivery;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import org.apache.http.HttpHost;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
@@ -32,7 +31,6 @@ import org.apache.http.localserver.LocalServerTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -135,46 +133,51 @@ public class DeliveryClientTest extends LocalServerTestBase {
                 Assert.assertTrue(rootException instanceof ExecutionException);
                 rootException = rootException.getCause();
             }
-            Assert.assertTrue(rootException.getCause() instanceof CompletionException);
-            Assert.assertTrue(rootException.getCause().getCause() instanceof KenticoIOException);
-            Assert.assertTrue(rootException.getCause().getCause().getCause() instanceof JsonParseException);
+            Assert.assertTrue(rootException.getCause() instanceof KenticoRetryException);
         }
         Assert.assertEquals(retryAttempts + 1, sentErrorCount.get());
     }
-//
-//    @Test
-//    public void testRetryStopsOnKenticoException() throws Exception {
-//        String projectId = "02a70003-e864-464e-b62c-e0ede97deb8c";
-//        final int[] sentErrorCount = {0};
-//
-//        this.serverBootstrap.registerHandler(
-//                String.format("/%s/%s", projectId, "items/error"),
-//                (request, response, context) -> {
-//                    response.setStatusCode(404);
-//                    response.setEntity(
-//                            new InputStreamEntity(
-//                                    this.getClass().getResourceAsStream("SampleKenticoError.json")
-//                            )
-//                    );
-//                    sentErrorCount[0] = sentErrorCount[0] + 1;
-//                });
-//        HttpHost httpHost = this.start();
-//        String testServerUri = httpHost.toURI();
-//        DeliveryOptions deliveryOptions = new DeliveryOptions();
-//        deliveryOptions.setProjectId(projectId);
-//        deliveryOptions.setProductionEndpoint(testServerUri);
-//        deliveryOptions.setRetryAttempts(1);
-//
-//        try (DeliveryClient client = new DeliveryClient(deliveryOptions)) {
-//            client.getItem("error");
-//            Assert.fail("Expected KenticoErrorException");
-//        } catch (KenticoErrorException e) {
-//            Assert.assertEquals("The requested content item 'error' was not found.", e.getMessage());
-//            Assert.assertEquals("The requested content item 'error' was not found.", e.getKenticoError().getMessage());
-//        }
-//        Assert.assertEquals(1, sentErrorCount[0]);
-//    }
-//
+
+    @Test
+    public void testRetryStopsOnKenticoException() throws Exception {
+        String projectId = "02a70003-e864-464e-b62c-e0ede97deb8c";
+        final int[] sentErrorCount = {0};
+
+        this.serverBootstrap.registerHandler(
+                String.format("/%s/%s", projectId, "items/error"),
+                (request, response, context) -> {
+                    response.setStatusCode(404);
+                    response.setEntity(
+                            new InputStreamEntity(
+                                    this.getClass().getResourceAsStream("SampleKenticoError.json")
+                            )
+                    );
+                    sentErrorCount[0] = sentErrorCount[0] + 1;
+                });
+        HttpHost httpHost = this.start();
+        String testServerUri = httpHost.toURI();
+        DeliveryOptions deliveryOptions = new DeliveryOptions();
+        deliveryOptions.setProjectId(projectId);
+        deliveryOptions.setProductionEndpoint(testServerUri);
+        deliveryOptions.setRetryAttempts(1);
+
+        try {
+            DeliveryClient client = new DeliveryClient(deliveryOptions);
+            client.getItem("error")
+                    .toCompletableFuture()
+                    .get();
+            Assert.fail("Expected KenticoErrorException");
+        } catch (Exception e) {
+            Throwable rootException = e;
+            for (int i = 0; i < deliveryOptions.getRetryAttempts(); i++) {
+                Assert.assertTrue(rootException instanceof ExecutionException);
+                rootException = rootException.getCause();
+            }
+            Assert.assertTrue(rootException.getCause() instanceof KenticoRetryException);
+        }
+        Assert.assertEquals(2, sentErrorCount[0]);
+    }
+
 //    @Test
 //    public void testGetItems() throws Exception {
 //        String projectId = "02a70003-e864-464e-b62c-e0ede97deb8c";

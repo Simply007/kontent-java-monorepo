@@ -137,7 +137,8 @@ public class DeliveryOptions {
     boolean waitForLoadingNewContent = false;
 
     /**
-     * Sets the number of retry attempts the client should make when a request to the API fails.  Defaults to 3.
+     * Sets the number of retry attempts the client should make when a request to the API fails.
+     * Defaults to 3, meaning 1 normal request + 3 retrials.
      *
      * @param retryAttempts New value for this DeliveryOptions instance.
      * @return              The number of retry attempts configured per request in this DeliveryOptions instance.
