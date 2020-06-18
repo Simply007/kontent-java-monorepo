@@ -33,7 +33,11 @@ public class KenticoRetryException extends RuntimeException {
     private final int maxRetryAttempts;
 
     KenticoRetryException(int maxRetryAttempts) {
-        super(String.format("Retry attempty reached max retry attempts ($d) ", maxRetryAttempts));
+        super(String.format("Retry attempty reached max retry attempts (%d) ", maxRetryAttempts));
         this.maxRetryAttempts = maxRetryAttempts;
+    }
+
+    public int getMaxRetryAttempts() {
+        return maxRetryAttempts;
     }
 }
