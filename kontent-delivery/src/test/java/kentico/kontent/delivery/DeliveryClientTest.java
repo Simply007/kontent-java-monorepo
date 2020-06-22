@@ -52,11 +52,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DeliveryClientTest extends LocalServerTestBase {
 
     @Test
-    public void failedTedt() throws Exception{
-        Assert.assertTrue(false);
-    }
-
-    @Test
     public void testSdkIdHeader() throws Exception {
         String projectId = "02a70003-e864-464e-b62c-e0ede97deb8c";
         String previewApiKey = "preview_api_key";
