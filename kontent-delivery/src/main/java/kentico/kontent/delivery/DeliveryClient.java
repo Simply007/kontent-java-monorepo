@@ -590,33 +590,6 @@ public class DeliveryClient {
                 .thenApply((result) -> t);
     }
 
-    private <T> CompletionStage<T> configureErrorAndRetry(Throwable error, Request request, final String url, Class<T> tClass, int initialRetryCount) throws KenticoIOException, KenticoErrorException, KenticoRetryException {
-        final AtomicInteger counter = new AtomicInteger(initialRetryCount);
-
-        // TODO error instanceof CompletionException
-        // Don't attempt a retry for Kentico specific errors
-        if (error.getCause() instanceof KenticoIOException) {
-            throw (KenticoIOException) error.getCause();
-        } else if (error.getCause() instanceof KenticoErrorException) {
-            throw (KenticoErrorException) error.getCause();
-        }
-        // Do attempt a retry for any other error while we haven't reached the max attempts yet
-        else if (counter.incrementAndGet() > deliveryOptions.getRetryAttempts()) {
-            throw new KenticoRetryException(deliveryOptions.getRetryAttempts());
-        }
-        // After the max attempts wrap IOExceptions in a KenticoIOException and propagate it
-        else if (error.getCause() instanceof IOException) {
-            throw new KenticoIOException((IOException) error);
-        } else {
-            //Perform a binary exponential backoff
-            int wait = (int) (100 * Math.pow(2, initialRetryCount));
-            log.info("Reattempting request after {}ms (re-attempt {} out of max {})",
-                    wait, counter.get(), deliveryOptions.getRetryAttempts());
-            // TODO add waiting
-            return retrieveFromKentico(request, url, tClass, counter.get());
-        }
-    }
-
     private List<NameValuePair> addTypeParameterIfNecessary(Class tClass, List<NameValuePair> params) {
         Optional<NameValuePair> any = params.stream()
                 .filter(nameValuePair -> nameValuePair.getName().equals("system.type"))
