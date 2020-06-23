@@ -37,10 +37,7 @@ import okhttp3.*;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.CompletionStage;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -109,6 +106,7 @@ public class DeliveryClient {
         }
     };
 
+    static final ScheduledExecutorService SCHEDULER = new ScheduledThreadPoolExecutor(0);
     public static final List<Integer> retryStatuses = Collections.unmodifiableList(Arrays.asList(408, 429, 500, 502, 503, 504));
 
     @SuppressWarnings("WeakerAccess")
@@ -468,22 +466,42 @@ public class DeliveryClient {
                     int wait = (int) (100 * Math.pow(2, retryTurn));
                     log.info("Reattempting request after {}ms (re-attempt {} out of max {})",
                             wait, counter.get(), deliveryOptions.getRetryAttempts());
-                    // TODO add waiting
                     // TODO why this is not async?
+                    // https://stackoverflow.com/questions/58707689/is-it-possible-to-schedule-a-completablefuture
                     try {
-                        return retrieveFromKentico(request, url, tClass, counter.get())
-                                .toCompletableFuture()
-                                .get();
+                        return CompletableFuture.supplyAsync(
+                                () -> {
+                                    try {
+                                        return retrieveFromKentico(request, url, tClass, counter.get())
+                                        .toCompletableFuture().get();
+                                    } catch (InterruptedException e) {
+                                        log.error("InterruptedException have been raised");
+                                        throw new CompletionException(e);
+                                    } catch (ExecutionException e) {
+                                        log.error("ExecutionException have been raised");
+                                        if (e.getCause() instanceof KenticoRetryException) {
+                                            KenticoRetryException exception = new KenticoRetryException(((KenticoRetryException) e.getCause()).getMaxRetryAttempts());
+                                            exception.initCause(error.getCause());
+                                            throw exception;
+                                        }
+                                        throw new CompletionException(e);
+                                    }
+                                },
+                                r -> SCHEDULER.schedule(
+                                        () -> ForkJoinPool.commonPool().execute(r), wait, TimeUnit.MILLISECONDS)
+                        ).toCompletableFuture()
+                        .get();
                     } catch (InterruptedException e) {
-                        log.error("InterruptedException have been raised");
+                        log.error("InterruptedException have been raised for timeout");
                         throw new CompletionException(e);
                     } catch (ExecutionException e) {
-                        log.error("ExecutionException have been raised");
+                        log.error("ExecutionException have been raised for timeout");
                         if (e.getCause() instanceof KenticoRetryException) {
                             KenticoRetryException exception = new KenticoRetryException(((KenticoRetryException) e.getCause()).getMaxRetryAttempts());
                             exception.initCause(error.getCause());
                             throw exception;
                         }
+
                         throw new CompletionException(e);
                     }
                 });
