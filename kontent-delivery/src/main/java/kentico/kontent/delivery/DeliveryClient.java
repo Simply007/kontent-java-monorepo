@@ -475,10 +475,10 @@ public class DeliveryClient {
                                         return retrieveFromKentico(request, url, tClass, counter.get())
                                         .toCompletableFuture().get();
                                     } catch (InterruptedException e) {
-                                        log.error("InterruptedException have been raised");
+                                        log.error(String.format("InterruptedException have been raised on retial no. %d", counter.get()));
                                         throw new CompletionException(e);
                                     } catch (ExecutionException e) {
-                                        log.error("ExecutionException have been raised");
+                                        log.error(String.format("ExecutionException have been raised on retrial no. %d", counter.get()));
                                         if (e.getCause() instanceof KenticoRetryException) {
                                             KenticoRetryException exception = new KenticoRetryException(((KenticoRetryException) e.getCause()).getMaxRetryAttempts());
                                             exception.initCause(error.getCause());
