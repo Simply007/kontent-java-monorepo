@@ -39,6 +39,8 @@ jobs:
         # version: # optional, default is 1.35.5
     - name: jFrog version
       run: jfrog --version
+    - name: list files
+      run: ls -alR
     - name: publish dry run
       run: jfrog bt upload * simply007/kontent-java-monorepo/kontent-delivery/0.0.1 --key=${{ secrets.JFROG_BINTRAY_API_KEY }} --dry-run
     
