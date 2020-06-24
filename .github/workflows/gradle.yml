@@ -28,11 +28,17 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: [build]
+    env:
+      JFROG_CLI_LOG_LEVEL: DEBUG
+      CI: true
     steps:
     - name: Setup JFrog CLI
       uses: jfrog/setup-jfrog-cli@v1.0.5
       # with:
         # JFrog CLI Version
         # version: # optional, default is 1.35.5
-    - name: test jFrog
+    - name: jFrog version
       run: jfrog --version
+    - name: publish dry run
+      run: jfrog bt upload * simply007//simply007/kontent-java-monorepo/kontent-delivery/0.0.1 --dry-run
+    
