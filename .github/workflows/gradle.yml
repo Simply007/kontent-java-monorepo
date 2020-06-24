@@ -13,6 +13,10 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    
+    env:
+      JFROG_CLI_LOG_LEVEL: DEBUG
+      CI: true
 
     steps:
     - uses: actions/checkout@v2
@@ -24,14 +28,6 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-      
-  release:
-    runs-on: ubuntu-latest
-    needs: [build]
-    env:
-      JFROG_CLI_LOG_LEVEL: DEBUG
-      CI: true
-    steps:
     - name: Setup JFrog CLI
       uses: jfrog/setup-jfrog-cli@v1.0.5
       # with:
