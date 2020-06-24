@@ -38,5 +38,5 @@ jobs:
     - name: list files
       run: ls -alR
     - name: publish dry run
-      run: jfrog bt upload * simply007/kontent-java-monorepo/kontent-delivery/0.0.1 --key=${{ secrets.JFROG_BINTRAY_API_KEY }} --dry-run
+      run: jfrog bt upload "kontent-delivery/build/libs/*" simply007/kontent-java-monorepo/kontent-delivery/0.0.1 --key=${{ secrets.JFROG_BINTRAY_API_KEY }} --dry-run
     
