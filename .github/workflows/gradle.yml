@@ -40,5 +40,5 @@ jobs:
     - name: jFrog version
       run: jfrog --version
     - name: publish dry run
-      run: jfrog bt upload * simply007/kontent-java-monorepo/kontent-delivery/0.0.1 --dry-run
+      run: jfrog bt upload * simply007/kontent-java-monorepo/kontent-delivery/0.0.1 --key=${{ secrets.JFROG_BINTRAY_API_KEY }} --dry-run
     
