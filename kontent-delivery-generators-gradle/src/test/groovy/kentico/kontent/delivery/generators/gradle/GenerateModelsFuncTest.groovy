@@ -44,16 +44,18 @@ class GenerateModelsFuncTest extends Specification {
         localServer.getProtectedServerBootstrap().registerHandler(
                 String.format("/%s/%s", projectId, "types"),
                 { request, response, context ->
-                    // TODO remove after fix
-                    println "XXX: request: ${request}"
-                    println "XXX: response: ${response}"
-                    println "XXX: context: ${context}"
-                    println "XXX: data: ${this.getClass().getResourceAsStream("SampleContentTypeList.json").readLines().get(1).toString()}"
-                    return response.setEntity(
-                            new InputStreamEntity(
-                                    this.getClass().getResourceAsStream("SampleContentTypeList.json")
-                            )
-                    )
+                    expression: {
+                        // TODO remove after fix
+                        println "XXX: request: ${request}"
+                        println "XXX: response: ${response}"
+                        println "XXX: context: ${context}"
+                        println "XXX: data: ${this.getClass().getResourceAsStream("SampleContentTypeList.json").readLines().get(1).toString()}"
+                        return response.setEntity(
+                                new InputStreamEntity(
+                                        this.getClass().getResourceAsStream("SampleContentTypeList.json")
+                                )
+                        )
+                    }
                 })
 
         HttpHost httpHost = localServer.start()
