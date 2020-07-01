@@ -42,7 +42,7 @@ class GenerateModelsFuncTest extends Specification {
         String projectId = "02a70003-e864-464e-b62c-e0ede97deb8c"
 
         localServer.getProtectedServerBootstrap().registerHandler(
-                String.format("/%s/%s", projectId, "types"),
+                "*", // String.format("/%s/%s", projectId, "types"),
                 { request, response, context ->
                     response.setEntity(
                             new InputStreamEntity(
