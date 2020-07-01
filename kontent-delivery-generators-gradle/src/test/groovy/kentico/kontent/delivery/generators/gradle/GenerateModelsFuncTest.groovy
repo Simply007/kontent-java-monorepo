@@ -1,7 +1,7 @@
 package kentico.kontent.delivery.generators.gradle
 
 import org.apache.http.HttpHost
-import org.apache.http.entity.StringEntity
+import org.apache.http.entity.InputStreamEntity
 import org.apache.http.impl.bootstrap.ServerBootstrap
 import org.apache.http.localserver.LocalServerTestBase
 import org.gradle.testkit.runner.BuildResult
@@ -46,10 +46,9 @@ class GenerateModelsFuncTest extends Specification {
                         String.format("/%s/%s", projectId, "types"),
                         { request, response, context ->
                             return response.setEntity(
-                                    new StringEntity("{\"types\":[{\"system\":{\"id\":\"b7aa4a53-d9b1-48cf-b7a6-ed0b182c4b89\",\"name\":\"Article\",\"codename\":\"article\",\"last_modified\":\"2017-04-04T13:40:29.970377Z\"},\"elements\":{\"personas\":{\"type\":\"taxonomy\",\"name\":\"Personas\",\"taxonomy_group\":\"personas\"},\"title\":{\"type\":\"text\",\"name\":\"Title\"},\"teaser_image\":{\"type\":\"asset\",\"name\":\"Teaserimage\"},\"post_date\":{\"type\":\"date_time\",\"name\":\"Postdate\"},\"summary\":{\"type\":\"text\",\"name\":\"Summary\"},\"body_copy\":{\"type\":\"rich_text\",\"name\":\"BodyCopy\"},\"related_articles\":{\"type\":\"modular_content\",\"name\":\"Relatedarticles\"},\"meta_keywords\":{\"type\":\"text\",\"name\":\"Metakeywords\"},\"meta_description\":{\"type\":\"text\",\"name\":\"Metadescription\"}}},{\"system\":{\"id\":\"7bc932b3-ce2a-4aa7-954e-04cbcbd214fc\",\"name\":\"Brewer\",\"codename\":\"brewer\",\"last_modified\":\"2017-04-04T13:40:29.970377Z\"},\"elements\":{\"product_name\":{\"type\":\"text\",\"name\":\"Productname\"},\"price\":{\"type\":\"number\",\"name\":\"Price\"},\"image\":{\"type\":\"asset\",\"name\":\"Image\"},\"product_status\":{\"type\":\"taxonomy\",\"name\":\"Productstatus\",\"taxonomy_group\":\"product_status\"},\"manufacturer\":{\"type\":\"text\",\"name\":\"Manufacturer\"},\"in_stock\":{\"type\":\"multiple_choice\",\"name\":\"InStock\"},\"short_description\":{\"type\":\"rich_text\",\"name\":\"Shortdescription\"},\"long_description\":{\"type\":\"rich_text\",\"name\":\"Longdescription\"}}}],\"pagination\":{\"skip\":0,\"limit\":3,\"count\":3,\"next_page\":\"https://kenticodeliver-apiwebapp.azurewebsites.net/975bf280-fd91-488c-994c-2f04416e5ee3/types?limit=3&skip=3\"}}")
-//                                    new InputStreamEntity(
-//                                            this.getClass().getResourceAsStream("SampleContentTypeList.json")
-//                                    )
+                                    new InputStreamEntity(
+                                            this.getClass().getResourceAsStream("SampleContentTypeList.json")
+                                    )
                             )
                         })
 
@@ -90,7 +89,6 @@ class GenerateModelsFuncTest extends Specification {
         buildFile << "compile fileTree(dir: '${new File(System.getProperty("user.dir")).parentFile.toString().replace('\\', '/')}/kontent-delivery/build/libs', include: 'kontent-delivery-*.jar')"
 
         buildFile << '''
-                compile fileTree(dir: '${project.rootDir}/kontent-delivery/build/libs', include: 'kontent-delivery-*.jar')
                 testCompile group: 'junit', name: 'junit', version: '4.12'
             }
         '''
