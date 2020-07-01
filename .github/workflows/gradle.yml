@@ -27,7 +27,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build --stacktrace --debug
+      run: ./gradlew build --stacktrace
     - name: Setup JFrog CLI
       uses: jfrog/setup-jfrog-cli@v1.0.5
       # with:
