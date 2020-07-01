@@ -44,6 +44,7 @@ class GenerateModelsFuncTest extends Specification {
         localServer.getProtectedServerBootstrap().registerHandler(
                 String.format("/%s/%s", projectId, "types"),
                 { request, response, context ->
+                    // TODO remove after fix
                     println "XXX: request: ${request}"
                     println "XXX: response: ${response}"
                     println "XXX: context: ${context}"
