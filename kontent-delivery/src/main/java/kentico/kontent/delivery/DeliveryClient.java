@@ -393,7 +393,7 @@ public class DeliveryClient {
 
     private <T> CompletionStage<T> executeRequest(final String url, Class<T> tClass) {
         final Request request = buildNewRequest(url);
-
+        log.info("Request to url: {}", url);
         final boolean skipCache = Optional.ofNullable(request.header(HEADER_X_KC_WAIT_FOR_LOADING_NEW_CONTENT))
                 .map(Boolean::valueOf)
                 .orElse(false);
@@ -545,11 +545,13 @@ public class DeliveryClient {
         httpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                log.error("Request call failed with IO Exception: {}", e.getMessage());
                 future.completeExceptionally(e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                log.info("Request call succeeded with response", response.body().string());
                 future.complete(response);
             }
         });
