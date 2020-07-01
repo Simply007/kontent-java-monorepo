@@ -3,6 +3,11 @@ plugins {
 }
 
 dependencies {
+    implementation('com.squareup:javapoet:1.9.0')
+    implementation('com.google.guava:guava:23.0')
     compile project(':kontent-delivery')
-    compile project('com.squareup:javapoet:1.9.0')
+
+    testCompile("junit:junit:4.12");
+    testCompile("org.apache.httpcomponents:httpclient:4.5.3:tests");
+    testCompile("org.apache.httpcomponents:httpclient:4.5.3");
 }

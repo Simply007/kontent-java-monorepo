@@ -520,6 +520,7 @@ public class DeliveryClient {
             }
         } else if (status >= 500) {
             log.error("Kentico API server error, status: {}", status);
+            log.info("Request URL: ", response.request().url().toString());
             String message =
                     String.format(
                             "Unknown error with Kentico API.  Kentico is likely suffering site issues.  Status: %s",

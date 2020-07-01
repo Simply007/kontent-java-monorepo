@@ -147,9 +147,9 @@ public class DeliveryOptions {
     int retryAttempts = 3;
 
     /**
-     * Sets the proxy server used by the http client.  See {@link ProxyServer.Builder}.
+     * Sets the proxy server used by the http client.  See {@link Proxy}.
      *
-     * @param proxyServer The {@link ProxyServer} instance to use with the client each request.
+     * @param proxyServer The {@link Proxy} instance to use with the client each request.
      * @return            The ProxyServer configured for this instance, or null.
      */
     @Builder.Default

@@ -1,0 +1,38 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.12.0'
+    id 'groovy'
+    id 'java'
+}
+
+dependencies {
+    compile("org.codehaus.groovy:groovy-all:2.5.10")
+    compile project(':kontent-delivery-generators-core')
+    implementation('com.squareup:javapoet:1.9.0')
+    compile gradleApi()
+
+
+    testCompile gradleTestKit()
+    testCompile("junit:junit:4.12")
+    testCompile("org.apache.httpcomponents:httpclient:4.5.3")
+    testCompile("org.apache.httpcomponents:httpclient:4.5.3:tests")
+    testCompile("org.spockframework:spock-core:1.0-groovy-2.4")
+
+}
+
+pluginBundle {
+    website = 'https://kontent.ai'
+    vcsUrl = 'https://github.com/Simply007/kontent-java-monorepo' // TODO change to appropriate repository
+    tags = ['test', 'generator', 'templates', 'kentico-kontent', 'java'] // TODO remove test tag
+}
+
+gradlePlugin {
+    plugins {
+        kontentDeliveryGenerator {
+            id = 'com.github.simply007.kontent.delivery.generator' // TODO change to appropriate id i.e. com.github.kentico.kontent.delivery.generator
+            displayName = 'Kontent model generators'
+            description = '(Testing) Java code generators for Kentico kontent. https://kontent.ai/' // TODO remove testing
+            implementationClass = 'kentico.kontent.delivery.generators.gradle.GenerateModelsPlugin'
+        }
+    }
+}
