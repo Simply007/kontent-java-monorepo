@@ -47,7 +47,8 @@ class GenerateModelsFuncTest extends Specification {
                     println "XXX: request: ${request}"
                     println "XXX: response: ${response}"
                     println "XXX: context: ${context}"
-                    response.setEntity(
+                    println "XXX: data: ${this.getClass().getResourceAsStream("SampleContentTypeList.json").readLines().get(1).toString()}"
+                    return response.setEntity(
                             new InputStreamEntity(
                                     this.getClass().getResourceAsStream("SampleContentTypeList.json")
                             )
