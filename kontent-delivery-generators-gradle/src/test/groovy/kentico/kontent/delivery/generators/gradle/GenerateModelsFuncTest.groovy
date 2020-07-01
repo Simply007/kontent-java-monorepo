@@ -41,7 +41,8 @@ class GenerateModelsFuncTest extends Specification {
         setup:
         String projectId = "02a70003-e864-464e-b62c-e0ede97deb8c"
 
-        localServer.getProtectedServerBootstrap().registerHandler(
+        ServerBootstrap serverBootstrap = localServer.getProtectedServerBootstrap();
+        serverBootstrap.registerHandler(
                 String.format("/%s/%s", projectId, "types"),
                 { request, response, context ->
                     expression: {
