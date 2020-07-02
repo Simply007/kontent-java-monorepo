@@ -133,7 +133,7 @@ class GenerateModelsFuncTest extends Specification {
     }
 
     class LocalServer extends LocalServerTestBase {
-        ServerBootstrap getProtectedServerBootstrap() {generateSources
+        ServerBootstrap getProtectedServerBootstrap() {
             return this.serverBootstrap
         }
     }
