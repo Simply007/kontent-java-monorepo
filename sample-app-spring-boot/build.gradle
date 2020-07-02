@@ -1,15 +1,10 @@
-// TODO try to come up with more convenient solution than to duplicate all dependencies here
-// https://discuss.gradle.org/t/how-can-i-use-a-custom-gradle-plugin-in-a-subproject-of-the-same-multi-project/6674/6
 buildscript {
     dependencies {
-        // local jars dependencies
         classpath fileTree(dir: '../kontent-delivery-generators-core/build/libs', includes: ['*.jar'])
         classpath fileTree(dir: '../kontent-delivery-generators-gradle/build/libs', includes: ['*.jar'])
         classpath fileTree(dir: '../kontent-delivery/build/libs', includes: ['*.jar'])
-        // core dependencies
         classpath('com.squareup:javapoet:1.9.0')
         classpath('com.google.guava:guava:23.0')
-        // kontent-delivery dependencies
         classpath("com.fasterxml.jackson.core:jackson-core:2.8.9")
         classpath("com.fasterxml.jackson.core:jackson-databind:2.8.9")
         classpath("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.4.0")
