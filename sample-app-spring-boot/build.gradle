@@ -39,7 +39,7 @@ dependencies {
 //kenticoModel {
 //    projectId = '975bf280-fd91-488c-994c-2f04416e5ee3'
 //    packageName = 'com.dancinggoat.models'
-//    outputDir = file('generated-sources')
+//    outputDir = file('src/main/java')
 //}
 
 
