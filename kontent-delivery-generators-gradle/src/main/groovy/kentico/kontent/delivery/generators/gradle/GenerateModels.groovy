@@ -10,7 +10,7 @@ class GenerateModels extends DefaultTask {
 
     GenerateModels() {
         setDescription("Generates source files from your Kentico Kontent project.")
-         // setGroup("KenticoKontent") // TODO uncomment before release https://plugins.gradle.org/docs/submit
+        setGroup("KenticoKontent")
     }
 
     @TaskAction

@@ -14,6 +14,8 @@
     <bytecodeTargetLevel>
       <module name="kontent-java-monorepo.kontent-delivery-generators-groovy.main" target="1.8" />
       <module name="kontent-java-monorepo.kontent-delivery-generators-groovy.test" target="1.8" />
+      <module name="kontent-java-monorepo.sample-app-models.main" target="1.8" />
+      <module name="kontent-java-monorepo.sample-app-models.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

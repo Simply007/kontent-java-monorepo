@@ -17,7 +17,6 @@ dependencies {
     testCompile("org.apache.httpcomponents:httpclient:4.5.3")
     testCompile("org.apache.httpcomponents:httpclient:4.5.3:tests")
     testCompile("org.spockframework:spock-core:1.0-groovy-2.4")
-
 }
 
 pluginBundle {
@@ -28,8 +27,8 @@ pluginBundle {
 
 gradlePlugin {
     plugins {
-        kontentDeliveryGenerator {
-            id = 'com.github.simply007.kontent.delivery.generator' // TODO change to appropriate id i.e. com.github.kentico.kontent.delivery.generator
+        simplePlugin  {
+            id = 'com.github.simply007.kontent.delivery.generator' // TODO change to appropriate id i.e. com.github.kentico.kontent.delivery.generator and resources in META.INF directory
             displayName = 'Kontent model generators'
             description = '(Testing) Java code generators for Kentico kontent. https://kontent.ai/' // TODO remove testing
             implementationClass = 'kentico.kontent.delivery.generators.gradle.GenerateModelsPlugin'
