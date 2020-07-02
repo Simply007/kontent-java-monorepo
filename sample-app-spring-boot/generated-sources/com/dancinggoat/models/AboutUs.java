@@ -1,12 +1,12 @@
 package com.dancinggoat.models;
 
 import java.lang.String;
-import java.lang.System;
 import java.util.List;
 import kentico.kontent.delivery.Asset;
 import kentico.kontent.delivery.ContentItem;
 import kentico.kontent.delivery.ContentItemMapping;
 import kentico.kontent.delivery.ElementMapping;
+import kentico.kontent.delivery.System;
 import kentico.kontent.delivery.Taxonomy;
 
 /**
