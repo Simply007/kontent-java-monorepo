@@ -156,3 +156,5 @@ gradle-app.setting
 
 .vscode/settings.json
 .settings
+
+bin/
