@@ -32,7 +32,6 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     compile project(':kontent-delivery')
-    compile project(':kontent-delivery-generators-gradle')
 }
 
 apply plugin: kentico.kontent.delivery.generators.gradle.GenerateModelsPlugin

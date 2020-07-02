@@ -1,6 +1,6 @@
 package kentico.kontent.delivery.sample.springboot;
 
-import kentico.kontent.delivery.ContentItemResponse;
+import com.dancinggoat.models.Article;
 import kentico.kontent.delivery.DeliveryClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,9 +21,9 @@ public class DemoApplication {
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name) throws ExecutionException, InterruptedException {
         final DeliveryClient client = new DeliveryClient("975bf280-fd91-488c-994c-2f04416e5ee3");
 
-        ContentItemResponse aboutUs = client.getItem("about_us")
+        Article onRoasts = client.getItem("on_roasts", Article.class)
                 .toCompletableFuture()
                 .get();
-        return String.format("Hello %s!", aboutUs.getItem().getString("metadata__twitter_title"));
+        return onRoasts.getBodyCopy();
     }
 }
