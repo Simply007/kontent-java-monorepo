@@ -1,4 +1,4 @@
-package com.dancinggoat.models;
+package kentico.kontent.delivery.sample.dancinggoat.models;
 
 import java.lang.Double;
 import java.lang.String;
@@ -15,8 +15,8 @@ import kentico.kontent.delivery.Taxonomy;
  * Changes to this file may cause incorrect behavior and will be lost if the code is regenerated.
  * For further modifications of the class, create a separate file and extend this class.
  */
-@ContentItemMapping("coffee")
-public class Coffee {
+@ContentItemMapping("accessory")
+public class Accessory {
   @ElementMapping("metadata__og_description")
   String metadataOgDescription;
 
@@ -26,26 +26,14 @@ public class Coffee {
   @ElementMapping("metadata__og_title")
   String metadataOgTitle;
 
-  @ElementMapping("product_status")
-  List<Taxonomy> productStatus;
-
-  @ElementMapping("altitude")
-  String altitude;
+  @ElementMapping("long_description")
+  String longDescription;
 
   @ElementMapping("metadata__meta_description")
   String metadataMetaDescription;
 
-  @ElementMapping("variety")
-  String variety;
-
-  @ElementMapping("image")
-  List<Asset> image;
-
   @ElementMapping("metadata__twitter_site")
   String metadataTwitterSite;
-
-  @ElementMapping("url_pattern")
-  String urlPattern;
 
   @ElementMapping("price")
   Double price;
@@ -56,20 +44,17 @@ public class Coffee {
   @ElementMapping("metadata__twitter_creator")
   String metadataTwitterCreator;
 
-  @ElementMapping("country")
-  String country;
-
-  @ElementMapping("sitemap")
-  List<Taxonomy> sitemap;
-
-  @ElementMapping("metadata__twitter_title")
-  String metadataTwitterTitle;
+  @ElementMapping("url_pattern")
+  String urlPattern;
 
   @ElementMapping("short_description")
   String shortDescription;
 
-  @ElementMapping("processing")
-  List<Taxonomy> processing;
+  @ElementMapping("manufacturer")
+  String manufacturer;
+
+  @ElementMapping("metadata__twitter_title")
+  String metadataTwitterTitle;
 
   @ElementMapping("metadata__twitter_description")
   String metadataTwitterDescription;
@@ -77,11 +62,14 @@ public class Coffee {
   @ElementMapping("metadata__og_image")
   List<Asset> metadataOgImage;
 
-  @ElementMapping("long_description")
-  String longDescription;
+  @ElementMapping("sitemap")
+  List<Taxonomy> sitemap;
 
-  @ElementMapping("farm")
-  String farm;
+  @ElementMapping("product_status")
+  List<Taxonomy> productStatus;
+
+  @ElementMapping("image")
+  List<Asset> image;
 
   @ElementMapping("product_name")
   String productName;
@@ -112,20 +100,12 @@ public class Coffee {
     this.metadataOgTitle = metadataOgTitle;
   }
 
-  public List<Taxonomy> getProductStatus() {
-    return productStatus;
+  public String getLongDescription() {
+    return longDescription;
   }
 
-  public void setProductStatus(List<Taxonomy> productStatus) {
-    this.productStatus = productStatus;
-  }
-
-  public String getAltitude() {
-    return altitude;
-  }
-
-  public void setAltitude(String altitude) {
-    this.altitude = altitude;
+  public void setLongDescription(String longDescription) {
+    this.longDescription = longDescription;
   }
 
   public String getMetadataMetaDescription() {
@@ -136,36 +116,12 @@ public class Coffee {
     this.metadataMetaDescription = metadataMetaDescription;
   }
 
-  public String getVariety() {
-    return variety;
-  }
-
-  public void setVariety(String variety) {
-    this.variety = variety;
-  }
-
-  public List<Asset> getImage() {
-    return image;
-  }
-
-  public void setImage(List<Asset> image) {
-    this.image = image;
-  }
-
   public String getMetadataTwitterSite() {
     return metadataTwitterSite;
   }
 
   public void setMetadataTwitterSite(String metadataTwitterSite) {
     this.metadataTwitterSite = metadataTwitterSite;
-  }
-
-  public String getUrlPattern() {
-    return urlPattern;
-  }
-
-  public void setUrlPattern(String urlPattern) {
-    this.urlPattern = urlPattern;
   }
 
   public Double getPrice() {
@@ -192,28 +148,12 @@ public class Coffee {
     this.metadataTwitterCreator = metadataTwitterCreator;
   }
 
-  public String getCountry() {
-    return country;
+  public String getUrlPattern() {
+    return urlPattern;
   }
 
-  public void setCountry(String country) {
-    this.country = country;
-  }
-
-  public List<Taxonomy> getSitemap() {
-    return sitemap;
-  }
-
-  public void setSitemap(List<Taxonomy> sitemap) {
-    this.sitemap = sitemap;
-  }
-
-  public String getMetadataTwitterTitle() {
-    return metadataTwitterTitle;
-  }
-
-  public void setMetadataTwitterTitle(String metadataTwitterTitle) {
-    this.metadataTwitterTitle = metadataTwitterTitle;
+  public void setUrlPattern(String urlPattern) {
+    this.urlPattern = urlPattern;
   }
 
   public String getShortDescription() {
@@ -224,12 +164,20 @@ public class Coffee {
     this.shortDescription = shortDescription;
   }
 
-  public List<Taxonomy> getProcessing() {
-    return processing;
+  public String getManufacturer() {
+    return manufacturer;
   }
 
-  public void setProcessing(List<Taxonomy> processing) {
-    this.processing = processing;
+  public void setManufacturer(String manufacturer) {
+    this.manufacturer = manufacturer;
+  }
+
+  public String getMetadataTwitterTitle() {
+    return metadataTwitterTitle;
+  }
+
+  public void setMetadataTwitterTitle(String metadataTwitterTitle) {
+    this.metadataTwitterTitle = metadataTwitterTitle;
   }
 
   public String getMetadataTwitterDescription() {
@@ -248,20 +196,28 @@ public class Coffee {
     this.metadataOgImage = metadataOgImage;
   }
 
-  public String getLongDescription() {
-    return longDescription;
+  public List<Taxonomy> getSitemap() {
+    return sitemap;
   }
 
-  public void setLongDescription(String longDescription) {
-    this.longDescription = longDescription;
+  public void setSitemap(List<Taxonomy> sitemap) {
+    this.sitemap = sitemap;
   }
 
-  public String getFarm() {
-    return farm;
+  public List<Taxonomy> getProductStatus() {
+    return productStatus;
   }
 
-  public void setFarm(String farm) {
-    this.farm = farm;
+  public void setProductStatus(List<Taxonomy> productStatus) {
+    this.productStatus = productStatus;
+  }
+
+  public List<Asset> getImage() {
+    return image;
+  }
+
+  public void setImage(List<Asset> image) {
+    this.image = image;
   }
 
   public String getProductName() {

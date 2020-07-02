@@ -26,8 +26,17 @@ plugins {
     id 'java'
 }
 
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
@@ -35,10 +44,10 @@ dependencies {
 }
 
 //apply plugin: kentico.kontent.delivery.generators.gradle.GenerateModelsPlugin
-
+//
 //kenticoModel {
 //    projectId = '975bf280-fd91-488c-994c-2f04416e5ee3'
-//    packageName = 'com.dancinggoat.models'
+//    packageName = 'kentico.kontent.delivery.sample.dancinggoat.models'
 //    outputDir = file('src/main/java')
 //}
 

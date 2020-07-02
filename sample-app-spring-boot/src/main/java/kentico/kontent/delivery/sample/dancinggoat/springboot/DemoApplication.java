@@ -1,7 +1,7 @@
-package kentico.kontent.delivery.sample.springboot;
+package kentico.kontent.delivery.sample.dancinggoat.springboot;
 
-import com.dancinggoat.models.Article;
 import kentico.kontent.delivery.DeliveryClient;
+import kentico.kontent.delivery.sample.dancinggoat.models.Article;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;

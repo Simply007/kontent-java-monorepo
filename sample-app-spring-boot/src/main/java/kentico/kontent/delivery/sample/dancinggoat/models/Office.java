@@ -1,4 +1,4 @@
-package com.dancinggoat.models;
+package kentico.kontent.delivery.sample.dancinggoat.models;
 
 import java.lang.String;
 import java.util.List;

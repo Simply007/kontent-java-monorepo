@@ -1,9 +1,9 @@
-package com.dancinggoat.models;
+package kentico.kontent.delivery.sample.dancinggoat.models;
 
+import java.lang.Double;
 import java.lang.String;
 import java.util.List;
 import kentico.kontent.delivery.Asset;
-import kentico.kontent.delivery.ContentItem;
 import kentico.kontent.delivery.ContentItemMapping;
 import kentico.kontent.delivery.ElementMapping;
 import kentico.kontent.delivery.System;
@@ -15,13 +15,19 @@ import kentico.kontent.delivery.Taxonomy;
  * Changes to this file may cause incorrect behavior and will be lost if the code is regenerated.
  * For further modifications of the class, create a separate file and extend this class.
  */
-@ContentItemMapping("about_us")
-public class AboutUs {
+@ContentItemMapping("brewer")
+public class Brewer {
+  @ElementMapping("product_name")
+  String productName;
+
   @ElementMapping("metadata__og_description")
   String metadataOgDescription;
 
   @ElementMapping("metadata__meta_title")
   String metadataMetaTitle;
+
+  @ElementMapping("long_description")
+  String longDescription;
 
   @ElementMapping("metadata__og_title")
   String metadataOgTitle;
@@ -32,17 +38,29 @@ public class AboutUs {
   @ElementMapping("metadata__twitter_site")
   String metadataTwitterSite;
 
-  @ElementMapping("url_pattern")
-  String urlPattern;
+  @ElementMapping("price")
+  Double price;
+
+  @ElementMapping("manufacturer")
+  List<Taxonomy> manufacturer;
 
   @ElementMapping("metadata__twitter_image")
   List<Asset> metadataTwitterImage;
 
+  @ElementMapping("metadata__twitter_creator")
+  String metadataTwitterCreator;
+
+  @ElementMapping("url_pattern")
+  String urlPattern;
+
   @ElementMapping("sitemap")
   List<Taxonomy> sitemap;
 
-  @ElementMapping("metadata__twitter_creator")
-  String metadataTwitterCreator;
+  @ElementMapping("short_description")
+  String shortDescription;
+
+  @ElementMapping("product_status")
+  List<Taxonomy> productStatus;
 
   @ElementMapping("metadata__twitter_title")
   String metadataTwitterTitle;
@@ -53,10 +71,18 @@ public class AboutUs {
   @ElementMapping("metadata__og_image")
   List<Asset> metadataOgImage;
 
-  @ContentItemMapping("facts")
-  List<ContentItem> facts;
+  @ElementMapping("image")
+  List<Asset> image;
 
   System system;
+
+  public String getProductName() {
+    return productName;
+  }
+
+  public void setProductName(String productName) {
+    this.productName = productName;
+  }
 
   public String getMetadataOgDescription() {
     return metadataOgDescription;
@@ -72,6 +98,14 @@ public class AboutUs {
 
   public void setMetadataMetaTitle(String metadataMetaTitle) {
     this.metadataMetaTitle = metadataMetaTitle;
+  }
+
+  public String getLongDescription() {
+    return longDescription;
+  }
+
+  public void setLongDescription(String longDescription) {
+    this.longDescription = longDescription;
   }
 
   public String getMetadataOgTitle() {
@@ -98,12 +132,20 @@ public class AboutUs {
     this.metadataTwitterSite = metadataTwitterSite;
   }
 
-  public String getUrlPattern() {
-    return urlPattern;
+  public Double getPrice() {
+    return price;
   }
 
-  public void setUrlPattern(String urlPattern) {
-    this.urlPattern = urlPattern;
+  public void setPrice(Double price) {
+    this.price = price;
+  }
+
+  public List<Taxonomy> getManufacturer() {
+    return manufacturer;
+  }
+
+  public void setManufacturer(List<Taxonomy> manufacturer) {
+    this.manufacturer = manufacturer;
   }
 
   public List<Asset> getMetadataTwitterImage() {
@@ -114,6 +156,22 @@ public class AboutUs {
     this.metadataTwitterImage = metadataTwitterImage;
   }
 
+  public String getMetadataTwitterCreator() {
+    return metadataTwitterCreator;
+  }
+
+  public void setMetadataTwitterCreator(String metadataTwitterCreator) {
+    this.metadataTwitterCreator = metadataTwitterCreator;
+  }
+
+  public String getUrlPattern() {
+    return urlPattern;
+  }
+
+  public void setUrlPattern(String urlPattern) {
+    this.urlPattern = urlPattern;
+  }
+
   public List<Taxonomy> getSitemap() {
     return sitemap;
   }
@@ -122,12 +180,20 @@ public class AboutUs {
     this.sitemap = sitemap;
   }
 
-  public String getMetadataTwitterCreator() {
-    return metadataTwitterCreator;
+  public String getShortDescription() {
+    return shortDescription;
   }
 
-  public void setMetadataTwitterCreator(String metadataTwitterCreator) {
-    this.metadataTwitterCreator = metadataTwitterCreator;
+  public void setShortDescription(String shortDescription) {
+    this.shortDescription = shortDescription;
+  }
+
+  public List<Taxonomy> getProductStatus() {
+    return productStatus;
+  }
+
+  public void setProductStatus(List<Taxonomy> productStatus) {
+    this.productStatus = productStatus;
   }
 
   public String getMetadataTwitterTitle() {
@@ -154,12 +220,12 @@ public class AboutUs {
     this.metadataOgImage = metadataOgImage;
   }
 
-  public List<ContentItem> getFacts() {
-    return facts;
+  public List<Asset> getImage() {
+    return image;
   }
 
-  public void setFacts(List<ContentItem> facts) {
-    this.facts = facts;
+  public void setImage(List<Asset> image) {
+    this.image = image;
   }
 
   public System getSystem() {

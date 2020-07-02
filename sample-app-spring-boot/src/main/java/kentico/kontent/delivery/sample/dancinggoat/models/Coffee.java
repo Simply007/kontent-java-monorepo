@@ -1,10 +1,9 @@
-package com.dancinggoat.models;
+package kentico.kontent.delivery.sample.dancinggoat.models;
 
+import java.lang.Double;
 import java.lang.String;
-import java.time.ZonedDateTime;
 import java.util.List;
 import kentico.kontent.delivery.Asset;
-import kentico.kontent.delivery.ContentItem;
 import kentico.kontent.delivery.ContentItemMapping;
 import kentico.kontent.delivery.ElementMapping;
 import kentico.kontent.delivery.System;
@@ -16,37 +15,40 @@ import kentico.kontent.delivery.Taxonomy;
  * Changes to this file may cause incorrect behavior and will be lost if the code is regenerated.
  * For further modifications of the class, create a separate file and extend this class.
  */
-@ContentItemMapping("article")
-public class Article {
+@ContentItemMapping("coffee")
+public class Coffee {
   @ElementMapping("metadata__og_description")
   String metadataOgDescription;
 
   @ElementMapping("metadata__meta_title")
   String metadataMetaTitle;
 
-  @ElementMapping("personas")
-  List<Taxonomy> personas;
-
-  @ElementMapping("body_copy")
-  String bodyCopy;
-
   @ElementMapping("metadata__og_title")
   String metadataOgTitle;
+
+  @ElementMapping("product_status")
+  List<Taxonomy> productStatus;
+
+  @ElementMapping("altitude")
+  String altitude;
 
   @ElementMapping("metadata__meta_description")
   String metadataMetaDescription;
 
+  @ElementMapping("variety")
+  String variety;
+
+  @ElementMapping("image")
+  List<Asset> image;
+
   @ElementMapping("metadata__twitter_site")
   String metadataTwitterSite;
 
-  @ElementMapping("post_date")
-  ZonedDateTime postDate;
+  @ElementMapping("url_pattern")
+  String urlPattern;
 
-  @ElementMapping("meta_keywords")
-  String metaKeywords;
-
-  @ElementMapping("teaser_image")
-  List<Asset> teaserImage;
+  @ElementMapping("price")
+  Double price;
 
   @ElementMapping("metadata__twitter_image")
   List<Asset> metadataTwitterImage;
@@ -54,11 +56,8 @@ public class Article {
   @ElementMapping("metadata__twitter_creator")
   String metadataTwitterCreator;
 
-  @ElementMapping("title")
-  String title;
-
-  @ElementMapping("summary")
-  String summary;
+  @ElementMapping("country")
+  String country;
 
   @ElementMapping("sitemap")
   List<Taxonomy> sitemap;
@@ -66,20 +65,26 @@ public class Article {
   @ElementMapping("metadata__twitter_title")
   String metadataTwitterTitle;
 
+  @ElementMapping("short_description")
+  String shortDescription;
+
+  @ElementMapping("processing")
+  List<Taxonomy> processing;
+
   @ElementMapping("metadata__twitter_description")
   String metadataTwitterDescription;
-
-  @ElementMapping("meta_description")
-  String metaDescription;
 
   @ElementMapping("metadata__og_image")
   List<Asset> metadataOgImage;
 
-  @ContentItemMapping("related_articles")
-  List<ContentItem> relatedArticles;
+  @ElementMapping("long_description")
+  String longDescription;
 
-  @ElementMapping("url_pattern")
-  String urlPattern;
+  @ElementMapping("farm")
+  String farm;
+
+  @ElementMapping("product_name")
+  String productName;
 
   System system;
 
@@ -99,28 +104,28 @@ public class Article {
     this.metadataMetaTitle = metadataMetaTitle;
   }
 
-  public List<Taxonomy> getPersonas() {
-    return personas;
-  }
-
-  public void setPersonas(List<Taxonomy> personas) {
-    this.personas = personas;
-  }
-
-  public String getBodyCopy() {
-    return bodyCopy;
-  }
-
-  public void setBodyCopy(String bodyCopy) {
-    this.bodyCopy = bodyCopy;
-  }
-
   public String getMetadataOgTitle() {
     return metadataOgTitle;
   }
 
   public void setMetadataOgTitle(String metadataOgTitle) {
     this.metadataOgTitle = metadataOgTitle;
+  }
+
+  public List<Taxonomy> getProductStatus() {
+    return productStatus;
+  }
+
+  public void setProductStatus(List<Taxonomy> productStatus) {
+    this.productStatus = productStatus;
+  }
+
+  public String getAltitude() {
+    return altitude;
+  }
+
+  public void setAltitude(String altitude) {
+    this.altitude = altitude;
   }
 
   public String getMetadataMetaDescription() {
@@ -131,6 +136,22 @@ public class Article {
     this.metadataMetaDescription = metadataMetaDescription;
   }
 
+  public String getVariety() {
+    return variety;
+  }
+
+  public void setVariety(String variety) {
+    this.variety = variety;
+  }
+
+  public List<Asset> getImage() {
+    return image;
+  }
+
+  public void setImage(List<Asset> image) {
+    this.image = image;
+  }
+
   public String getMetadataTwitterSite() {
     return metadataTwitterSite;
   }
@@ -139,28 +160,20 @@ public class Article {
     this.metadataTwitterSite = metadataTwitterSite;
   }
 
-  public ZonedDateTime getPostDate() {
-    return postDate;
+  public String getUrlPattern() {
+    return urlPattern;
   }
 
-  public void setPostDate(ZonedDateTime postDate) {
-    this.postDate = postDate;
+  public void setUrlPattern(String urlPattern) {
+    this.urlPattern = urlPattern;
   }
 
-  public String getMetaKeywords() {
-    return metaKeywords;
+  public Double getPrice() {
+    return price;
   }
 
-  public void setMetaKeywords(String metaKeywords) {
-    this.metaKeywords = metaKeywords;
-  }
-
-  public List<Asset> getTeaserImage() {
-    return teaserImage;
-  }
-
-  public void setTeaserImage(List<Asset> teaserImage) {
-    this.teaserImage = teaserImage;
+  public void setPrice(Double price) {
+    this.price = price;
   }
 
   public List<Asset> getMetadataTwitterImage() {
@@ -179,20 +192,12 @@ public class Article {
     this.metadataTwitterCreator = metadataTwitterCreator;
   }
 
-  public String getTitle() {
-    return title;
+  public String getCountry() {
+    return country;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public String getSummary() {
-    return summary;
-  }
-
-  public void setSummary(String summary) {
-    this.summary = summary;
+  public void setCountry(String country) {
+    this.country = country;
   }
 
   public List<Taxonomy> getSitemap() {
@@ -211,20 +216,28 @@ public class Article {
     this.metadataTwitterTitle = metadataTwitterTitle;
   }
 
+  public String getShortDescription() {
+    return shortDescription;
+  }
+
+  public void setShortDescription(String shortDescription) {
+    this.shortDescription = shortDescription;
+  }
+
+  public List<Taxonomy> getProcessing() {
+    return processing;
+  }
+
+  public void setProcessing(List<Taxonomy> processing) {
+    this.processing = processing;
+  }
+
   public String getMetadataTwitterDescription() {
     return metadataTwitterDescription;
   }
 
   public void setMetadataTwitterDescription(String metadataTwitterDescription) {
     this.metadataTwitterDescription = metadataTwitterDescription;
-  }
-
-  public String getMetaDescription() {
-    return metaDescription;
-  }
-
-  public void setMetaDescription(String metaDescription) {
-    this.metaDescription = metaDescription;
   }
 
   public List<Asset> getMetadataOgImage() {
@@ -235,20 +248,28 @@ public class Article {
     this.metadataOgImage = metadataOgImage;
   }
 
-  public List<ContentItem> getRelatedArticles() {
-    return relatedArticles;
+  public String getLongDescription() {
+    return longDescription;
   }
 
-  public void setRelatedArticles(List<ContentItem> relatedArticles) {
-    this.relatedArticles = relatedArticles;
+  public void setLongDescription(String longDescription) {
+    this.longDescription = longDescription;
   }
 
-  public String getUrlPattern() {
-    return urlPattern;
+  public String getFarm() {
+    return farm;
   }
 
-  public void setUrlPattern(String urlPattern) {
-    this.urlPattern = urlPattern;
+  public void setFarm(String farm) {
+    this.farm = farm;
+  }
+
+  public String getProductName() {
+    return productName;
+  }
+
+  public void setProductName(String productName) {
+    this.productName = productName;
   }
 
   public System getSystem() {

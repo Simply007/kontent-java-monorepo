@@ -1,9 +1,9 @@
-package com.dancinggoat.models;
+package kentico.kontent.delivery.sample.dancinggoat.models;
 
+import java.lang.Double;
 import java.lang.String;
 import java.util.List;
 import kentico.kontent.delivery.Asset;
-import kentico.kontent.delivery.ContentItem;
 import kentico.kontent.delivery.ContentItemMapping;
 import kentico.kontent.delivery.ElementMapping;
 import kentico.kontent.delivery.System;
@@ -15,8 +15,11 @@ import kentico.kontent.delivery.Taxonomy;
  * Changes to this file may cause incorrect behavior and will be lost if the code is regenerated.
  * For further modifications of the class, create a separate file and extend this class.
  */
-@ContentItemMapping("home")
-public class Home {
+@ContentItemMapping("grinder")
+public class Grinder {
+  @ElementMapping("sitemap")
+  List<Taxonomy> sitemap;
+
   @ElementMapping("metadata__og_description")
   String metadataOgDescription;
 
@@ -26,11 +29,17 @@ public class Home {
   @ElementMapping("metadata__og_title")
   String metadataOgTitle;
 
-  @ContentItemMapping("articles")
-  List<ContentItem> articles;
+  @ElementMapping("price")
+  Double price;
 
-  @ContentItemMapping("hero_unit")
-  List<ContentItem> heroUnit;
+  @ElementMapping("long_description")
+  String longDescription;
+
+  @ElementMapping("short_description")
+  String shortDescription;
+
+  @ElementMapping("manufacturer")
+  String manufacturer;
 
   @ElementMapping("metadata__meta_description")
   String metadataMetaDescription;
@@ -38,11 +47,8 @@ public class Home {
   @ElementMapping("metadata__twitter_site")
   String metadataTwitterSite;
 
-  @ContentItemMapping("our_story")
-  List<ContentItem> ourStory;
-
-  @ContentItemMapping("cafes")
-  List<ContentItem> cafes;
+  @ElementMapping("product_status")
+  List<Taxonomy> productStatus;
 
   @ElementMapping("metadata__twitter_image")
   List<Asset> metadataTwitterImage;
@@ -50,25 +56,33 @@ public class Home {
   @ElementMapping("metadata__twitter_creator")
   String metadataTwitterCreator;
 
+  @ElementMapping("image")
+  List<Asset> image;
+
   @ElementMapping("metadata__twitter_title")
   String metadataTwitterTitle;
+
+  @ElementMapping("product_name")
+  String productName;
 
   @ElementMapping("metadata__twitter_description")
   String metadataTwitterDescription;
 
-  @ElementMapping("metadata__og_image")
-  List<Asset> metadataOgImage;
-
   @ElementMapping("url_pattern")
   String urlPattern;
 
-  @ElementMapping("sitemap")
-  List<Taxonomy> sitemap;
-
-  @ElementMapping("contact")
-  String contact;
+  @ElementMapping("metadata__og_image")
+  List<Asset> metadataOgImage;
 
   System system;
+
+  public List<Taxonomy> getSitemap() {
+    return sitemap;
+  }
+
+  public void setSitemap(List<Taxonomy> sitemap) {
+    this.sitemap = sitemap;
+  }
 
   public String getMetadataOgDescription() {
     return metadataOgDescription;
@@ -94,20 +108,36 @@ public class Home {
     this.metadataOgTitle = metadataOgTitle;
   }
 
-  public List<ContentItem> getArticles() {
-    return articles;
+  public Double getPrice() {
+    return price;
   }
 
-  public void setArticles(List<ContentItem> articles) {
-    this.articles = articles;
+  public void setPrice(Double price) {
+    this.price = price;
   }
 
-  public List<ContentItem> getHeroUnit() {
-    return heroUnit;
+  public String getLongDescription() {
+    return longDescription;
   }
 
-  public void setHeroUnit(List<ContentItem> heroUnit) {
-    this.heroUnit = heroUnit;
+  public void setLongDescription(String longDescription) {
+    this.longDescription = longDescription;
+  }
+
+  public String getShortDescription() {
+    return shortDescription;
+  }
+
+  public void setShortDescription(String shortDescription) {
+    this.shortDescription = shortDescription;
+  }
+
+  public String getManufacturer() {
+    return manufacturer;
+  }
+
+  public void setManufacturer(String manufacturer) {
+    this.manufacturer = manufacturer;
   }
 
   public String getMetadataMetaDescription() {
@@ -126,20 +156,12 @@ public class Home {
     this.metadataTwitterSite = metadataTwitterSite;
   }
 
-  public List<ContentItem> getOurStory() {
-    return ourStory;
+  public List<Taxonomy> getProductStatus() {
+    return productStatus;
   }
 
-  public void setOurStory(List<ContentItem> ourStory) {
-    this.ourStory = ourStory;
-  }
-
-  public List<ContentItem> getCafes() {
-    return cafes;
-  }
-
-  public void setCafes(List<ContentItem> cafes) {
-    this.cafes = cafes;
+  public void setProductStatus(List<Taxonomy> productStatus) {
+    this.productStatus = productStatus;
   }
 
   public List<Asset> getMetadataTwitterImage() {
@@ -158,12 +180,28 @@ public class Home {
     this.metadataTwitterCreator = metadataTwitterCreator;
   }
 
+  public List<Asset> getImage() {
+    return image;
+  }
+
+  public void setImage(List<Asset> image) {
+    this.image = image;
+  }
+
   public String getMetadataTwitterTitle() {
     return metadataTwitterTitle;
   }
 
   public void setMetadataTwitterTitle(String metadataTwitterTitle) {
     this.metadataTwitterTitle = metadataTwitterTitle;
+  }
+
+  public String getProductName() {
+    return productName;
+  }
+
+  public void setProductName(String productName) {
+    this.productName = productName;
   }
 
   public String getMetadataTwitterDescription() {
@@ -174,14 +212,6 @@ public class Home {
     this.metadataTwitterDescription = metadataTwitterDescription;
   }
 
-  public List<Asset> getMetadataOgImage() {
-    return metadataOgImage;
-  }
-
-  public void setMetadataOgImage(List<Asset> metadataOgImage) {
-    this.metadataOgImage = metadataOgImage;
-  }
-
   public String getUrlPattern() {
     return urlPattern;
   }
@@ -190,20 +220,12 @@ public class Home {
     this.urlPattern = urlPattern;
   }
 
-  public List<Taxonomy> getSitemap() {
-    return sitemap;
+  public List<Asset> getMetadataOgImage() {
+    return metadataOgImage;
   }
 
-  public void setSitemap(List<Taxonomy> sitemap) {
-    this.sitemap = sitemap;
-  }
-
-  public String getContact() {
-    return contact;
-  }
-
-  public void setContact(String contact) {
-    this.contact = contact;
+  public void setMetadataOgImage(List<Asset> metadataOgImage) {
+    this.metadataOgImage = metadataOgImage;
   }
 
   public System getSystem() {
