@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${article.title}"></title>
+</head>
+<body>
+<header>
+    <h1 th:text="${article.title}"></h1>
+</header>
+<article>
+    <div th:utext="${article.bodyCopy}"></div>
+</article>
+</body>
+</html>
