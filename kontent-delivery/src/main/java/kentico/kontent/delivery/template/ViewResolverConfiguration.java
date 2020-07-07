@@ -34,7 +34,7 @@ public class ViewResolverConfiguration {
     String suffix = ".html";
 
     public ViewResolverConfiguration() {
-        this.prefixes.addAll(Arrays.asList("kentico/templates/", "META-INF/kentico/templates/"));
+        this.prefixes.addAll(Arrays.asList("kentico/templates/", "META-INF/kentico/templates/", "kontent/templates/", "META-INF/kontent/templates/"));
     }
 
     public ViewResolverConfiguration addPrefixes(String... prefixes) {
