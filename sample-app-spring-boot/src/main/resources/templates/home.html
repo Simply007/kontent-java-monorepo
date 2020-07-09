@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head"></head>
+
+<body>
+<div th:replace="fragments/layout :: header">Dancing Goat</div>
+
+<!--<div th:replace="fragments/header :: header">&nbsp;</div>-->
+<div class="container">
+    <section class="banner-section"
+             style="background-image: url(&quot;https://assets-us-01.kc-usercontent.com:443/975bf280-fd91-488c-994c-2f04416e5ee3/55caecc2-400c-4ee3-91c3-0f7f067414ec/banner-default.jpg&quot;);">
+        <!--        <h2 class="banner-heading" th:text="${home.title.getHeroUnit().get(1).getTitle()}"></h2>-->
+        <h2 class="banner-heading">Roasting premium coffee</h2>
+        <div class="banner-text"><p>Discover the fascinating world of Dancing Goat high-quality coffee and you will
+            never miss a single coffee break again.</p></div>
+    </section>
+</div>
+<div th:replace="fragments/layout :: footer">&copy; 2020 The Static Templates</div>
+</body>
+
+</html>

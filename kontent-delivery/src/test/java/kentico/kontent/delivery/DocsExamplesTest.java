@@ -76,6 +76,7 @@ public class DocsExamplesTest extends LocalServerTestBase {
                 ));
         HttpHost httpHost = this.start();
         DeliveryClient client = new DeliveryClient(projectId);
+        client.registerType(ArticleItem.class);
 
         String testServerUri = httpHost.toURI();
         client.getDeliveryOptions().setProductionEndpoint(testServerUri);
@@ -89,7 +90,7 @@ public class DocsExamplesTest extends LocalServerTestBase {
             .page(null, 3)
             .build();
 
-        List<ArticleItem> items = client.getItems(ArticleItem.class)
+        List<ArticleItem> items = client.getItems(ArticleItem.class, params)
                 .toCompletableFuture()
                 .get();
         Assert.assertNotNull(items);
