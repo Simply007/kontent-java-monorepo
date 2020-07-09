@@ -39,17 +39,17 @@ import java.util.*;
 @lombok.extern.slf4j.Slf4j
 public class StronglyTypedContentItemConverter {
 
-    private HashMap<String, Class<?>> contentTypeToClassMapping = new HashMap<>();
-    private HashMap<Class<?>, String> classToContentTypeMapping = new HashMap<>();
-    private HashMap<Type, InlineContentItemsResolver> typeToInlineResolverMapping = new HashMap<>();
+    private HashMap<String, String> contentTypeToClassNameMapping = new HashMap<>();
+    private HashMap<String, String> classNameToContentTypeMapping = new HashMap<>();
+    private HashMap<String, InlineContentItemsResolver> typeNameToInlineResolverMapping = new HashMap<>();
 
     protected StronglyTypedContentItemConverter() {
         //protected constructor
     }
 
     protected void registerType(String contentType, Class<?> clazz) {
-        contentTypeToClassMapping.put(contentType, clazz);
-        classToContentTypeMapping.put(clazz, contentType);
+        contentTypeToClassNameMapping.put(contentType, clazz.getName());
+        classNameToContentTypeMapping.put(clazz.getName(), contentType);
     }
 
     protected void registerType(Class<?> clazz) {
@@ -63,20 +63,20 @@ public class StronglyTypedContentItemConverter {
     }
 
     protected String getContentType(Class tClass) {
-        if (classToContentTypeMapping.containsKey(tClass)) {
-            return classToContentTypeMapping.get(tClass);
+        if (classNameToContentTypeMapping.containsKey(tClass.getName())) {
+            return classNameToContentTypeMapping.get(tClass.getName());
         }
         return null;
     }
 
     protected void registerInlineContentItemsResolver(InlineContentItemsResolver resolver) {
-        typeToInlineResolverMapping.put(resolver.getType(), resolver);
+        typeNameToInlineResolverMapping.put(resolver.getType().getTypeName(), resolver);
     }
 
     protected InlineContentItemsResolver getResolverForType(String contentType) {
-        if (contentTypeToClassMapping.containsKey(contentType) &&
-                typeToInlineResolverMapping.containsKey(contentTypeToClassMapping.get(contentType))) {
-            return typeToInlineResolverMapping.get(contentTypeToClassMapping.get(contentType));
+        if (contentTypeToClassNameMapping.containsKey(contentType) &&
+                typeNameToInlineResolverMapping.containsKey(contentTypeToClassNameMapping.get(contentType))) {
+            return typeNameToInlineResolverMapping.get(contentTypeToClassNameMapping.get(contentType));
         }
         return null;
     }
@@ -115,16 +115,33 @@ public class StronglyTypedContentItemConverter {
     }
 
     Object convert(ContentItem item, Map<String, ContentItem> linkedItems, String contentType) {
-        Class<?> mappingClass = contentTypeToClassMapping.get(contentType);
+        String className = contentTypeToClassNameMapping.get(contentType);
+        Class<?> mappingClass;
+        try {
+            mappingClass = Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            return item;
+        }
+
         if (mappingClass == null) {
             return item;
         }
+
         return convert(item, linkedItems, mappingClass);
     }
 
     <T> T convert(ContentItem item, Map<String, ContentItem> linkedItems, Class<T> tClass) {
         if (tClass == Object.class) {
-            Class<?> mappingClass = contentTypeToClassMapping.get(item.getSystem().getType());
+            String className = contentTypeToClassNameMapping.get(item.getSystem().getType());
+            if (className == null) {
+                return (T) item;
+            }
+            Class<?> mappingClass = null;
+            try {
+                mappingClass = Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                return (T) item;
+            }
             if (mappingClass == null) {
                 return (T) item;
             }
@@ -234,11 +251,11 @@ public class StronglyTypedContentItemConverter {
         if (clazzContentItemMapping != null) {
             contentType = clazzContentItemMapping.value();
         }
-        if (contentType == null && classToContentTypeMapping.containsKey(listClass)) {
-            contentType = classToContentTypeMapping.get(listClass);
+        if (contentType == null && classNameToContentTypeMapping.containsKey(listClass.getName())) {
+            contentType = classNameToContentTypeMapping.get(listClass.getName());
         }
         if (contentType != null) {
-            HashMap convertedLinkedItems  = new HashMap<>();
+            HashMap convertedLinkedItems = new HashMap<>();
             for (Map.Entry<String, ContentItem> entry : linkedItems.entrySet()) {
                 if (entry.getValue() != null && contentType.equals(entry.getValue().getSystem().getType())) {
                     Map<String, ContentItem> linkedItemsForRecursion =
@@ -312,7 +329,7 @@ public class StronglyTypedContentItemConverter {
 
         log.debug("Got type {} from {}",
                 type.getTypeName(),
-                String.format("%s#%s", bean.getClass().getSimpleName(),field.getName()));
+                String.format("%s#%s", bean.getClass().getSimpleName(), field.getName()));
 
         return type;
 
