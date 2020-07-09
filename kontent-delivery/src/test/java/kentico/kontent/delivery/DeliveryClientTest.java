@@ -94,7 +94,7 @@ public class DeliveryClientTest extends LocalServerTestBase {
                                 )
                         );
                     } else {
-                        response.setStatusCode(DeliveryClient.retryStatuses.get(0)); // Retry status code
+                        response.setStatusCode(500); // Retry status codes in DeliveryClient
                         response.setEntity(new StringEntity("Response Error!"));
                         sentError.set(true);
                     }

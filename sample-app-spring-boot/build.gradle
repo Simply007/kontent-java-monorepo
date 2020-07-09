@@ -51,7 +51,6 @@ dependencies {
 //    outputDir = file('src/main/java')
 //}
 
-
 test {
     useJUnitPlatform()
 }

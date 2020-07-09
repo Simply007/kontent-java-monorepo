@@ -81,6 +81,8 @@ public class DeliveryClient {
 
     private static final String URL_CONCAT = "%s/%s";
 
+    private static final List<Integer> RETRY_STATUSES = Collections.unmodifiableList(Arrays.asList(408, 429, 500, 502, 503, 504));
+
     private ObjectMapper objectMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private DeliveryOptions deliveryOptions;
@@ -107,7 +109,6 @@ public class DeliveryClient {
     };
 
     static final ScheduledExecutorService SCHEDULER = new ScheduledThreadPoolExecutor(0);
-    public static final List<Integer> retryStatuses = Collections.unmodifiableList(Arrays.asList(408, 429, 500, 502, 503, 504));
 
     @SuppressWarnings("WeakerAccess")
     public DeliveryClient(DeliveryOptions deliveryOptions) {
@@ -509,14 +510,14 @@ public class DeliveryClient {
 
     private Response handleErrorIfNecessary(Response response) throws KenticoIOException, KenticoErrorException {
         final int status = response.code();
-        if (retryStatuses.contains(status)) {
-            log.error("Kentico API retry status returned: {} (one of {})", status, retryStatuses.toString());
+        if (RETRY_STATUSES.contains(status)) {
+            log.error("Kentico API retry status returned: {} (one of {})", status, RETRY_STATUSES.toString());
             try {
                 KenticoError kenticoError = objectMapper.readValue(response.body().bytes(), KenticoError.class);
                 throw new KenticoErrorException(kenticoError);
             } catch (IOException e) {
                 log.error("IOException when trying to parse the error response body: {}", e.toString());
-                throw new KenticoIOException(String.format("Kentico API retry status returned: %d (one of %s)", status, retryStatuses.toString()));
+                throw new KenticoIOException(String.format("Kentico API retry status returned: %d (one of %s)", status, RETRY_STATUSES.toString()));
             }
         } else if (status >= 500) {
             log.error("Kentico API server error, status: {}", status);
