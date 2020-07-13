@@ -456,11 +456,20 @@ public class DeliveryClient {
                     final AtomicInteger counter = new AtomicInteger(retryTurn);
 
                     if (error instanceof CompletionException) {
-                        throw (CompletionException) error;
+                        Throwable cause = error.getCause();
+
+                        // Don't retry when when not KenticoException or not set to retry
+                        boolean retry = cause instanceof KenticoException && ((KenticoException) cause).shouldRetry();
+
+                        if (!retry) {
+                            throw (CompletionException) error;
+                        }
                     }
 
                     if (counter.incrementAndGet() > deliveryOptions.getRetryAttempts()) {
-                        throw new KenticoRetryException(deliveryOptions.getRetryAttempts());
+                        KenticoRetryException ex = new KenticoRetryException(deliveryOptions.getRetryAttempts());
+                        ex.initCause(error.getCause());
+                        throw ex;
                     }
 
                     //Perform a binary exponential backoff
@@ -474,7 +483,7 @@ public class DeliveryClient {
                                 () -> {
                                     try {
                                         return retrieveFromKentico(request, url, tClass, counter.get())
-                                        .toCompletableFuture().get();
+                                                .toCompletableFuture().get();
                                     } catch (InterruptedException e) {
                                         log.error(String.format("InterruptedException have been raised on retial no. %d", counter.get()));
                                         throw new CompletionException(e);
@@ -491,7 +500,7 @@ public class DeliveryClient {
                                 r -> SCHEDULER.schedule(
                                         () -> ForkJoinPool.commonPool().execute(r), wait, TimeUnit.MILLISECONDS)
                         ).toCompletableFuture()
-                        .get();
+                                .get();
                     } catch (InterruptedException e) {
                         log.error("InterruptedException have been raised for timeout");
                         throw new CompletionException(e);
@@ -514,10 +523,10 @@ public class DeliveryClient {
             log.error("Kentico API retry status returned: {} (one of {})", status, RETRY_STATUSES.toString());
             try {
                 KenticoError kenticoError = objectMapper.readValue(response.body().bytes(), KenticoError.class);
-                throw new KenticoErrorException(kenticoError);
+                throw new KenticoErrorException(kenticoError, true);
             } catch (IOException e) {
                 log.error("IOException when trying to parse the error response body: {}", e.toString());
-                throw new KenticoIOException(String.format("Kentico API retry status returned: %d (one of %s)", status, RETRY_STATUSES.toString()));
+                throw new KenticoIOException(String.format("Kentico API retry status returned: %d (one of %s)", status, RETRY_STATUSES.toString()), true);
             }
         } else if (status >= 500) {
             log.error("Kentico API server error, status: {}", status);
@@ -526,15 +535,15 @@ public class DeliveryClient {
                     String.format(
                             "Unknown error with Kentico API.  Kentico is likely suffering site issues.  Status: %s",
                             status);
-            throw new CompletionException(new KenticoIOException(message));
+            throw new CompletionException(new KenticoIOException(message, false));
         } else if (status >= 400) {
             log.error("Kentico API server error, status: {}", status);
             try {
                 KenticoError kenticoError = objectMapper.readValue(response.body().bytes(), KenticoError.class);
-                throw new CompletionException(new KenticoErrorException(kenticoError));
+                throw new CompletionException(new KenticoErrorException(kenticoError, false));
             } catch (IOException e) {
                 log.error("IOException connecting to Kentico: {}", e.toString());
-                throw new CompletionException(new KenticoIOException(e));
+                throw new CompletionException(new KenticoIOException(e, false));
             }
         }
 

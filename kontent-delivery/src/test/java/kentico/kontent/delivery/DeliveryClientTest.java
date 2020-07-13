@@ -1189,8 +1189,10 @@ public class DeliveryClientTest extends LocalServerTestBase {
                     .get();
             Assert.fail("Expected IOException");
         } catch (ExecutionException e) {
-            Assert.assertTrue(e.getCause() instanceof KenticoIOException);
-            Assert.assertEquals("Kentico API retry status returned: 500 (one of [408, 429, 500, 502, 503, 504])", e.getCause().getMessage());
+            Assert.assertTrue(e.getCause() instanceof KenticoRetryException);
+            Assert.assertTrue(e.getCause().getCause() instanceof KenticoIOException);
+            Assert.assertEquals("Retry attempty reached max retry attempts (3) ", e.getCause().getMessage());
+            Assert.assertEquals("Kentico API retry status returned: 500 (one of [408, 429, 500, 502, 503, 504])", e.getCause().getCause().getMessage());
         }
     }
 

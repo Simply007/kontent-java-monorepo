@@ -28,7 +28,7 @@ package kentico.kontent.delivery;
  * Thrown when retry attempts are is thrown when executing against the KenticoKontent API.  Generally means
  * connectivity problems with Kentico.
  */
-public class KenticoRetryException extends RuntimeException {
+public class KenticoRetryException extends RuntimeException implements KenticoException {
 
     private final int maxRetryAttempts;
 
@@ -39,5 +39,10 @@ public class KenticoRetryException extends RuntimeException {
 
     public int getMaxRetryAttempts() {
         return maxRetryAttempts;
+    }
+
+    @Override
+    public boolean shouldRetry() {
+        return false;
     }
 }

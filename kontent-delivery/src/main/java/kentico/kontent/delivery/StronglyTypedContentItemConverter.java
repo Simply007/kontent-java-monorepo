@@ -189,9 +189,6 @@ public class StronglyTypedContentItemConverter {
         }
         //Check to see if this is an explicitly mapped ContentItem
         ContentItemMapping contentItemMapping = field.getAnnotation(ContentItemMapping.class);
-        if (contentItemMapping != null && linkedItems.containsKey(contentItemMapping.value())) {
-            return getCastedLinkedItemsForField(field.getType(), contentItemMapping.value(), linkedItems);
-        }
         if (contentItemMapping != null &&
                 isListOrMap(field.getType()) &&
                 item.getElements().containsKey(contentItemMapping.value()) &&
@@ -203,6 +200,9 @@ public class StronglyTypedContentItemConverter {
                 referencedLinkedItems.put(codename, linkedItems.get(codename));
             }
             return getCastedLinkedItemsForListOrMap(bean, field, referencedLinkedItems);
+        }
+        if (contentItemMapping != null && linkedItems.containsKey(contentItemMapping.value())) {
+            return getCastedLinkedItemsForField(field.getType(), contentItemMapping.value(), linkedItems);
         }
 
         //Implicit checks
