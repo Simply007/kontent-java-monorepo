@@ -5,7 +5,7 @@
     <link href="css/site.css" rel="stylesheet" media="screen" th:href="@{css/site.css}"/>
 </head>
 
-<nav th:fragment="header">
+<nav th:fragment="header(model)">
     <header class="header" role="banner">
         <div class="menu">
             <div class="container">
@@ -20,8 +20,11 @@
         </div>
         <div class="header-row">
             <div class="container">
-                <div class="col-xs-8 col-md-8 col-lg-4 logo"><h1 class="logo"><a class="logo-link" href="/en-us">Dancing
-                    Goat</a></h1></div>
+                <div class="col-xs-8 col-md-8 col-lg-4 logo">
+                    <h1 class="logo">
+                        <a class="logo-link" href="/en-us" th:text="${model.title}"/>
+                    </h1>
+                </div>
             </div>
         </div>
     </header>

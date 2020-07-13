@@ -1,6 +1,8 @@
 package kentico.kontent.delivery.sample.dancinggoat.controllers;
 
 import kentico.kontent.delivery.DeliveryClient;
+import kentico.kontent.delivery.sample.dancinggoat.models.Home;
+import kentico.kontent.delivery.sample.dancinggoat.viewModels.HomeViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +18,12 @@ public class HomeController {
     @GetMapping("/")
     String index(Model model) throws ExecutionException, InterruptedException {
 
-//        Home home = deliveryClient.getItem("home", Home.class, DeliveryParameterBuilder.params().linkedItemsDepth(2).build())
-//                .toCompletableFuture()
-//                .get();
+        Home home = deliveryClient.getItem("home", Home.class)
+                .toCompletableFuture()
+                .get();
 
-//        model.addAttribute("home", home);
+        HomeViewModel viewModel = new HomeViewModel(home);
+        model.addAttribute("model", viewModel);
         return "home";
     }
 }
