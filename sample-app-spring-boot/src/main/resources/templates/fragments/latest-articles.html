@@ -6,7 +6,7 @@
 
     <div class="article-tile article-tile-large">
         <div class="col-md-12 col-lg-6">
-            <a th:href="${'/articles/' + model.mainArticle.getSystem().getCodename() }">
+            <a th:href="${'/articles/' + model.mainArticle.getUrlPattern() }">
                 <img class="article-tile-image"
                      th:title="${model.mainArticle.getTitle()}"
                      th:alt="${model.mainArticle.getTitle()}"
@@ -18,7 +18,7 @@
                  th:text="${model.mainArticle.getPostDate()}"/>
             <div class="article-tile-content">
                 <h2>
-                    <a th:href="${'/articles/' + model.mainArticle.getSystem().getCodename() }"
+                    <a th:href="${'/articles/' + model.mainArticle.getUrlPattern() }"
                        th:text="${model.mainArticle.getTitle()}"/></a>
                 </h2>
                 <p class="article-tile-text lead-paragraph"
@@ -30,7 +30,7 @@
     <th:block th:each="article : ${model.otherArticles}">
         <div class="col-md-3">
             <div class="article-tile">
-                <a th:href="${'/articles/' + article.getSystem().getCodename() }">
+                <a th:href="${'/articles/' + article.getUrlPattern() }">
                     <img class="article-tile-image"
                          th:title="${article.getTitle()}"
                          th:alt="${article.getTitle()}"
@@ -40,7 +40,7 @@
                      th:text="${article.getPostDate()}"/>
                 <div class="article-tile-content">
                     <h2 class="h4">
-                        <a th:href="${'/articles/' + article.getSystem().getCodename() }"
+                        <a th:href="${'/articles/' + article.getUrlPattern() }"
                            th:text="${article.getTitle()}"/>
                     </h2>
                     <p class="article-tile-text"

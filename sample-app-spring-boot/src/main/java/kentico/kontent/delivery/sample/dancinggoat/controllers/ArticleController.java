@@ -32,9 +32,16 @@ public class ArticleController {
         return "articles";
     }
 
-    @GetMapping("/articles/{codename}")
-    public String getArticle(Model model, @PathVariable("codename") String codename) throws ExecutionException, InterruptedException {
-        Article article = deliveryClient.getItem(codename, Article.class).toCompletableFuture().get();
+    @GetMapping("/articles/{pattern}")
+    public String getArticle(Model model, @PathVariable("pattern") String pattern) throws ExecutionException, InterruptedException {
+        Article article = deliveryClient
+                .getItems(Article.class, DeliveryParameterBuilder
+                        .params()
+                        .filterEquals("elements.url_pattern", pattern)
+                        .build())
+                .toCompletableFuture()
+                .get()
+                .get(0);
         model.addAttribute("article", article);
         return "article";
     }

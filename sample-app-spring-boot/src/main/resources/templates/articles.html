@@ -10,7 +10,7 @@
         <div class="clear" th:if="${state.index%4 == 0}"></div>
         <div class="col-md-3">
             <div class="article-tile">
-                <a th:href="${'/articles/' + article.getSystem().getCodename() }">
+                <a th:href="${'/articles/' + article.getUrlPattern() }">
                     <img class="article-tile-image"
                          th:alt="${article.getTitle()}"
                          th:title="${article.getTitle()}"
@@ -20,7 +20,7 @@
                      th:text="${article.getPostDate()}"/>
                 <div class="article-tile-content">
                     <h2 class="h4">
-                        <a th:href="${'/articles/' + article.getSystem().getCodename() }"
+                        <a th:href="${'/articles/' + article.getUrlPattern() }"
                            th:text="${article.getTitle()}"/>
                     </h2>
                     <p class="article-tile-text"
