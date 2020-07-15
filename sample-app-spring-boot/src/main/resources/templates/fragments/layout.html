@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:fragment="head">
-    <link href="css/site.css" rel="stylesheet" media="screen" th:href="@{css/site.css}"/>
+    <link href="/css/site.css" rel="stylesheet" media="screen" th:href="@{/css/site.css}"/>
 </head>
 
 <nav th:fragment="header(model)">
@@ -22,7 +22,7 @@
             <div class="container">
                 <div class="col-xs-8 col-md-8 col-lg-4 logo">
                     <h1 class="logo">
-                        <a class="logo-link" href="/en-us" th:text="${model.title}"/>
+                        <a class="logo-link" href="/" th:text="${model} ? ${model.title} : ${'Dancing Goat'}"/>
                     </h1>
                 </div>
             </div>
