@@ -5,8 +5,27 @@
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds
  */
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
+    }
+}
+
+Properties properties = new Properties()
+def propertiesFile = project.rootProject.file('local.properties')
+if (propertiesFile.exists()) {
+    properties.load(propertiesFile.newDataInputStream())
+}
+
+ext.bintrayUser = properties.getProperty('BINTRAY_USER') != null ? properties.getProperty('BINTRAY_USER') : System.getenv('API_TOKEN')
+ext.bintrayKey = properties.getProperty('BINTRAY_KEY') != null ? properties.getProperty('BINTRAY_KEY') : System.getenv('API_TOKEN')
+ext.bintrayGpg = properties.getProperty('BINTRAY_GPG') != null ? properties.getProperty('BINTRAY_GPG') : System.getenv('BINTRAY_GPG')
+
 allprojects {
-    apply plugin: 'java'
+
     repositories {
         jcenter()
 
@@ -17,12 +36,15 @@ allprojects {
         }
     }
 
-
+    apply plugin: 'java'
 
     sourceCompatibility = "1.8"
     targetCompatibility = "1.8"
 }
 
+
 subprojects {
-    version = '0.0.1-beta.3'
+    version = '0.0.2-beta.8'
+    ext.repoGroupId = 'com.github.simply007'
+    group = 'com.github.simply007'
 }
