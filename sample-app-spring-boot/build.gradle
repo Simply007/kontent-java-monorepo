@@ -28,11 +28,11 @@ plugins {
 }
 
 // TODO remove when on jcenter
-repositories {
-    maven {
-        url  "https://dl.bintray.com/simply007/kontent-java-monorepo"
-    }
-}
+//repositories {
+//    maven {
+//        url  "https://dl.bintray.com/simply007/kontent-java-monorepo"
+//    }
+//}
 
 configurations {
     developmentOnly
@@ -48,8 +48,9 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-//    compile project(':kontent-delivery')
-    implementation 'com.github.simply007:kontent-delivery:0.0.2-beta.8'
+    compile project(':kontent-delivery')
+    // TODO remove showcase
+//    implementation 'com.github.simply007:kontent-delivery:0.0.2-beta.8'
 }
 
 //apply plugin: kentico.kontent.delivery.generators.gradle.GenerateModelsPlugin

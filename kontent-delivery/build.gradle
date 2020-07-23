@@ -32,20 +32,28 @@ lombok {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+    archiveClassifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+import io.franzbecker.gradle.lombok.task.DelombokTask
+task delombok(type: DelombokTask, dependsOn: compileJava) {
+    ext.outputDir = file("$buildDir/delombok")
+    outputs.dir(outputDir)
+    sourceSets.main.java.srcDirs.each { dir ->
+        inputs.dir(dir)
+        args(dir, "-d", outputDir)
+    }
+}
+
+javadoc {
+    dependsOn delombok
+    source = delombok.outputDir
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
     from javadoc.destinationDir
-}
-
-// TODO remove this test task
-task printProps {
-    println version
-    println repoGroupId
-    println group
 }
 
 def pomConfig = {
@@ -72,6 +80,8 @@ publishing {
     publications {
         BintrayPublication(MavenPublication) {
             from components.java
+            artifact sourcesJar
+            artifact javadocJar
             artifactId = 'kontent-delivery'
             groupId = repoGroupId
             versionMapping {
