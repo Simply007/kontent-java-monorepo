@@ -44,12 +44,6 @@ dependencies {
     implementation 'com.github.simply007:kontent-delivery:0.0.2-beta.11'
 }
 
-
-
-import kentico.kontent.delivery.*;
-import kentico.kontent.delivery.generators.*;
-import com.squareup.javapoet.JavaFile;
-
 // showcase task
 task generateModels {
     doLast {
