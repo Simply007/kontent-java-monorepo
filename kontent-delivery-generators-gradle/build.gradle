@@ -7,7 +7,7 @@ plugins {
 
 dependencies {
     compile("org.codehaus.groovy:groovy-all:2.5.10")
-    compile project(':kontent-delivery-generators-core')
+    compile project(':kontent-delivery-generators')
     implementation('com.squareup:javapoet:1.9.0')
     compile gradleApi()
 
