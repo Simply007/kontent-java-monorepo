@@ -56,26 +56,6 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-def pomConfig = {
-    developers {
-        developer {
-            id 'ondrejch'
-            name 'Ondrej Chrastina'
-            email 'ondrej.chrastina@kentico.com'
-        }
-    }
-    licenses {
-        license {
-            name "MIT"
-            url "https://github.com/Simply007/kontent-java-monorepo/blob/master/LICENSE.md"
-            distribution "repo"
-        }
-    }
-    scm {
-        url "git@github.com:Simply007/kontent-java-monorepo.git"
-    }
-}
-
 publishing {
     publications {
         BintrayPublication(MavenPublication) {
@@ -103,14 +83,16 @@ publishing {
     }
 }
 
-// TODO adjust before final release
+// TODO adjust before final release (do not forget userOrg set to Kentico + labels -> https://github.com/bintray/gradle-bintray-plugin#buildgradle)
 bintray {
     user = bintrayUser
     key = bintrayKey
+    publish = true
     publications = ['BintrayPublication']
     pkg {
         repo = 'kontent-java-monorepo'
         name = 'kontent-delivery'
+        publicDownloadNumbers = true
         licenses = ['MIT']
         vcsUrl = 'https://github.com/bintray/gradle-bintray-plugin.git'
         version {

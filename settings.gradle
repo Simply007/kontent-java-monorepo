@@ -9,4 +9,4 @@
 
 rootProject.name = 'kontent-java-monorepo'
 
-include 'test-app', 'kontent-delivery', 'sample-app-spring-boot', 'kontent-delivery-generators', 'kontent-delivery-generators-gradle'
+include 'test-app', 'kontent-delivery', 'sample-app-spring-boot', 'kontent-delivery-generators'

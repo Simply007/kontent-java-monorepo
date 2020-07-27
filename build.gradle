@@ -24,6 +24,26 @@ ext.bintrayUser = properties.getProperty('BINTRAY_USER') != null ? properties.ge
 ext.bintrayKey = properties.getProperty('BINTRAY_KEY') != null ? properties.getProperty('BINTRAY_KEY') : System.getenv('API_TOKEN')
 ext.bintrayGpg = properties.getProperty('BINTRAY_GPG') != null ? properties.getProperty('BINTRAY_GPG') : System.getenv('BINTRAY_GPG')
 
+ext.pomConfig = {
+    developers {
+        developer {
+            id 'ondrejch'
+            name 'Ondrej Chrastina'
+            email 'ondrej.chrastina@kentico.com'
+        }
+    }
+    licenses {
+        license {
+            name "MIT"
+            url "https://github.com/Simply007/kontent-java-monorepo/blob/master/LICENSE.md"
+            distribution "repo"
+        }
+    }
+    scm {
+        url "git@github.com:Simply007/kontent-java-monorepo.git"
+    }
+}
+
 allprojects {
 
     repositories {
@@ -44,7 +64,7 @@ allprojects {
 
 
 subprojects {
-    version = '0.0.2-beta.9'
+    version = '0.0.2-beta.11'
     ext.repoGroupId = 'com.github.simply007'
     group = 'com.github.simply007'
 }
