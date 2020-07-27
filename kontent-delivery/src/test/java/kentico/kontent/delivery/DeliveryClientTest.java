@@ -464,6 +464,7 @@ public class DeliveryClientTest extends LocalServerTestBase {
 
         String testServerUri = httpHost.toURI();
         client.getDeliveryOptions().setProductionEndpoint(testServerUri);
+        client.getDeliveryOptions().retryAttempts = -1;
 
         ContentItemResponse item = client.getItem("on_roasts")
                 .toCompletableFuture()
@@ -714,6 +715,7 @@ public class DeliveryClientTest extends LocalServerTestBase {
         ArticleItem item = client.getItem("on_roasts", ArticleItem.class)
                 .toCompletableFuture()
                 .get();
+
         Assert.assertNotNull(item);
         Assert.assertNotNull(item.getSystemInformationObject());
         Assert.assertNull(item.getRandomValue());
@@ -735,6 +737,14 @@ public class DeliveryClientTest extends LocalServerTestBase {
         Assert.assertEquals(2, item.getAllLinkedItems().size());
         Assert.assertNotNull(item.getAllLinkedItemsMap());
         Assert.assertEquals(2, item.getAllLinkedItemsMap().size());
+    }
+
+    @Test
+
+    public void securedAPI() {
+        DeliveryOptions.builder().projectId("02a70003-e864-464e-b62c-e0ede97deb8c").productionApiKey("ksldajhflkjshfdlkj");
+
+
     }
 
 

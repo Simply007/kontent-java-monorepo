@@ -91,6 +91,7 @@ public class DeliveryOptions {
 
     /**
      * The Production API key configured with your Kentico Kontent account.
+     * // TODO add mention about secured API
      *
      * @param productionApiKey  Sets the value of the production API key in this DeliveryOptions instance.
      * @return                  The value of the production API key in this DeliveryOptions instance.

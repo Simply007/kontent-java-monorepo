@@ -27,13 +27,6 @@ plugins {
     id 'java'
 }
 
-// TODO remove when on jcenter
-//repositories {
-//    maven {
-//        url  "https://dl.bintray.com/simply007/kontent-java-monorepo"
-//    }
-//}
-
 configurations {
     developmentOnly
     runtimeClasspath {
@@ -50,7 +43,7 @@ dependencies {
     }
     compile project(':kontent-delivery')
     // TODO remove showcase
-//    implementation 'com.github.simply007:kontent-delivery:0.0.2-beta.8'
+//    implementation 'com.github.simply007:kontent-delivery:0.0.2-beta.9'
 }
 
 //apply plugin: kentico.kontent.delivery.generators.gradle.GenerateModelsPlugin
