@@ -83,7 +83,7 @@ bintray {
         name = 'kontent-delivery-generators'
         publicDownloadNumbers = true
         licenses = ['MIT']
-        vcsUrl = 'https://github.com/bintray/gradle-bintray-plugin.git'
+        vcsUrl = 'https://github.com/Simply007/kontent-java-monorepo.git'
         version {
             name = version.name
             desc = 'Generators producing strongly-typed models based on Content Types in a Kentico Kontent project.'

@@ -94,7 +94,7 @@ bintray {
         name = 'kontent-delivery'
         publicDownloadNumbers = true
         licenses = ['MIT']
-        vcsUrl = 'https://github.com/bintray/gradle-bintray-plugin.git'
+        vcsUrl = 'https://github.com/Simply007/kontent-java-monorepo.git'
         version {
             name = version.name
             desc = 'Java client around Kentico Kontent Delivery REST API.'
