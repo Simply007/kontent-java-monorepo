@@ -20,6 +20,8 @@
       <module name="kontent-java-monorepo.kontent-delivery-generators-groovy.test" target="1.8" />
       <module name="kontent-java-monorepo.sample-app-models.main" target="1.8" />
       <module name="kontent-java-monorepo.sample-app-models.test" target="1.8" />
+      <module name="kontent-java-monorepo.test-app.main" target="1.8" />
+      <module name="kontent-java-monorepo.test-app.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -36,7 +36,7 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    compile project(':kontent-delivery')
+     compile project(':kontent-delivery')
     // TODO remove showcase
 //    implementation 'com.github.simply007:kontent-delivery:0.0.2-beta.9'
 }
