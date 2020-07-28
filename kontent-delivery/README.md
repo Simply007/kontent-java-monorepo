@@ -251,6 +251,10 @@ articleItem.getLinkedItems("related_articles")
 
 For more developer resources, visit the Kentico Kontent Docs at <https://docs.kontent.ai>.
 
+### Showcase
+
+If you want to explore the possibilities of the SDK, visit [Features section of the Spring boot application](../sample-app-spring-boot/Readme.md#Features).
+
 ### Feedback & Contributing
 
 Check out the [contributing](CONTRIBUTING.md) page to see the best places to file issues, start discussions, and begin contributing.
